@@ -289,7 +289,7 @@ rusty_v8 includes experimental support for certain feature(s) that may be useful
 
 ```kotlin
 dependencies {
-    implementation("io.github.kotlinmania:v8-kotlin:0.1.0-SNAPSHOT")
+    implementation("io.github.kotlinmania:v8-kotlin:0.1.0")
 }
 ```
 
