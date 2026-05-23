@@ -199,10 +199,18 @@ kotlin {
         binaries.framework { baseName = "V8"; xcf.add(this) }
     }
     iosSimulatorArm64 {
-        binaries.framework { baseName = "V8"; xcf.add(this) }
+        binaries.framework {
+            baseName = "V8"
+            isStatic = true
+            xcf.add(this)
+        }
     }
     iosX64 {
-        binaries.framework { baseName = "V8"; xcf.add(this) }
+        binaries.framework {
+            baseName = "V8"
+            isStatic = true
+            xcf.add(this)
+        }
     }
 
     tvosArm64 {
