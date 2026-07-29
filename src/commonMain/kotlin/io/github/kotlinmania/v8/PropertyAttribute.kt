@@ -1,7 +1,9 @@
 // port-lint: source src/property_attribute.rs
 package io.github.kotlinmania.v8
 
-class PropertyAttribute private constructor(private val bits: UInt) {
+class PropertyAttribute private constructor(
+    private val bits: UInt,
+) {
     /** Test if no property attributes are set. */
     fun isNone(): Boolean = this == NONE
 
