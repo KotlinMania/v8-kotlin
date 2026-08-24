@@ -523,6 +523,16 @@ mavenPublishing {
 // Tasks
 // ============================================================================
 
+// Exact test lifecycle task. Without this, ./gradlew test is ambiguous between
+// Android test task names. This runs commonTest through the KMP allTests
+// lifecycle and adds the Android host + Swift Export parity tests.
+tasks.register("test") {
+    group = "verification"
+    description = "Runs the commonTest-backed KMP suite, Android host tests, and Swift Export smoke test."
+    dependsOn("hostTests")
+    dependsOn("swiftExportSmokeTest")
+}
+
 tasks.register("setupAndroidSdk") {
     group = "setup"
     description = "Downloads and configures the project-local Android SDK. (Alias for ensureAndroidSdk)"
@@ -557,12 +567,19 @@ tasks.register("swiftExportSmokeTest") {
 
     doLast {
         val execOperations = serviceOf<ExecOperations>()
-        val swiftBuildDir =
+        val swiftBuildFile =
             layout.buildDirectory
                 .dir("swift-test")
                 .get()
                 .asFile
-                .absolutePath
+        swiftBuildFile.deleteRecursively()
+        swiftBuildFile.mkdirs()
+        val swiftBuildDir = swiftBuildFile.absolutePath
+        layout.buildDirectory
+            .dir("bin/macosArm64/SwiftExportBinaryDebugStatic")
+            .get()
+            .asFile
+            .mkdirs()
         execOperations
             .exec {
                 workingDir = projectDir
@@ -597,17 +614,20 @@ tasks.register("swiftExportSmokeTest") {
             if (!text.contains("platforms:")) {
                 generatedPackageSwift.writeText(
                     text.replaceFirst(
-                        Regex("(name:\\s*\"[^\"]*\",)"),
-                        "\$1\n    platforms: [.macOS(.v14)],",
+                        Regex("""(Package\(\s*name:\s*"[^"]*",)"""),
+                        "$1\n    platforms: [.macOS(.v14)],",
                     ),
                 )
             }
         }
 
+        val scratchDir = layout.buildDirectory.dir("swift-test-scratch").get().asFile
+        scratchDir.deleteRecursively()
+
         execOperations
             .exec {
                 workingDir = layout.projectDirectory.dir("swift-test-harness").asFile
-                commandLine("swift", "test")
+                commandLine("swift", "test", "--scratch-path", scratchDir.absolutePath)
             }.assertNormalExitValue()
     }
 }
