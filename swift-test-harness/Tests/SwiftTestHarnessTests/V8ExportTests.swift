@@ -5,6 +5,16 @@ import V8
 struct V8ExportTests {
     @Test("Swift module loads cleanly")
     func testSwiftModuleLoads() throws {
-        #expect(true)
+        let attr = PropertyAttribute.Companion.shared.NONE
+        #expect(attr.isNone())
+
+        let filter = PropertyFilter.Companion.shared.ALL_PROPERTIES
+        #expect(filter.isAllProperties())
+
+        let flags = PropertyHandlerFlags.Companion.shared.NONE
+        #expect(flags.isNone())
+
+        let policy = MicrotasksPolicy.AUTO
+        #expect(policy.description == "AUTO")
     }
 }
