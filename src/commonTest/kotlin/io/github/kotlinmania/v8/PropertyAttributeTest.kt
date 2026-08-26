@@ -1,4 +1,4 @@
-// port-lint: source src/property_attribute.rs
+// port-lint: source property_attribute.rs
 package io.github.kotlinmania.v8
 
 import kotlin.test.Test

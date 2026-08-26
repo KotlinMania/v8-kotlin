@@ -96,7 +96,7 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 5. property_attribute
 
-- **Target:** `v8.PropertyAttribute [PROVENANCE-FALLBACK]`
+- **Target:** `v8.PropertyAttribute`
 - **Similarity:** 0.67
 - **Dependents:** 2
 - **Priority Score:** 2021103.2
@@ -105,11 +105,6 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/2 matched
 - **Missing types:** `Output`
 - **Tests:** 1/1 matched
-- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `src/property_attribute.rs` vs expected `property_attribute.rs`
-- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `src/property_attribute.rs` vs expected `property_attribute.rs`
-- **Proposed provenance header:** `// port-lint: source property_attribute.rs` (current: `// port-lint: source src/property_attribute.rs`)
-- **Proposed provenance header:** `// port-lint: source property_attribute.rs` (current: `// port-lint: source src/property_attribute.rs`)
-- **Lint issues:** 2
 
 ### 6. property_filter
 
