@@ -1,4 +1,4 @@
-// port-lint: tests private.rs
+// port-lint: tests v8/src/private.rs
 package io.github.kotlinmania.v8
 
 import kotlin.test.Test

@@ -1,4 +1,4 @@
-// port-lint: tests primitives.rs
+// port-lint: tests v8/src/primitives.rs
 package io.github.kotlinmania.v8
 
 import kotlin.test.Test
