@@ -10,13 +10,17 @@ interface Primitive : Value {
 
 object Null : Primitive {
     override fun isNull(): Boolean = true
+
     override fun isNullOrUndefined(): Boolean = true
+
     override fun toString(): String = "null"
 }
 
 object Undefined : Primitive {
     override fun isUndefined(): Boolean = true
+
     override fun isNullOrUndefined(): Boolean = true
+
     override fun toString(): String = "undefined"
 }
 
@@ -24,7 +28,9 @@ class V8Boolean private constructor(
     val value: Boolean,
 ) : Primitive {
     override fun isBoolean(): Boolean = true
+
     override fun isTrue(): Boolean = value
+
     override fun isFalse(): Boolean = !value
 
     override fun equals(other: Any?): Boolean =
@@ -43,4 +49,5 @@ class V8Boolean private constructor(
 }
 
 fun nullValue(): Primitive = Null
+
 fun undefinedValue(): Primitive = Undefined

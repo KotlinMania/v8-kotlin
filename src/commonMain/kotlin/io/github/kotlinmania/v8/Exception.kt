@@ -88,6 +88,8 @@ private class ErrorValue(
     val errorMessage: String,
 ) : Value {
     override fun isNativeError(): Boolean = true
+
     override fun isObject(): Boolean = true
+
     override fun toString(): String = "$errorName: $errorMessage"
 }

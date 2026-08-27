@@ -31,9 +31,10 @@ class PropertyHandlerFlagsTest {
 
         assertEquals(PropertyHandlerFlags.NONE, PropertyHandlerFlags.default())
 
-        val attr = PropertyHandlerFlags.ONLY_INTERCEPT_STRINGS or
-            PropertyHandlerFlags.HAS_NO_SIDE_EFFECT or
-            PropertyHandlerFlags.NON_MASKING
+        val attr =
+            PropertyHandlerFlags.ONLY_INTERCEPT_STRINGS or
+                PropertyHandlerFlags.HAS_NO_SIDE_EFFECT or
+                PropertyHandlerFlags.NON_MASKING
         assertFalse(attr.isNone())
         assertTrue(attr.isNonMasking())
         assertTrue(attr.isOnlyInterceptStrings())

@@ -5,18 +5,24 @@ package io.github.kotlinmania.v8
  * An error returned when attempting an invalid cast or downcast on V8 data.
  */
 sealed class DataError : kotlin.Exception() {
-    data class BadType(val expected: String, val actual: String) : DataError() {
+    data class BadType(
+        val expected: String,
+        val actual: String,
+    ) : DataError() {
         override val message: String
             get() = "cannot cast $actual to $expected"
     }
 
-    data class NoData(val expected: String) : DataError() {
+    data class NoData(
+        val expected: String,
+    ) : DataError() {
         override val message: String
             get() = "expected data of type $expected but found none"
     }
 
     companion object {
         fun badType(expected: String, actual: String): DataError = BadType(expected, actual)
+
         fun noData(expected: String): DataError = NoData(expected)
     }
 }
