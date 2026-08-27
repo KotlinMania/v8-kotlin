@@ -1,4 +1,4 @@
-// port-lint: source v8/src/microtask.rs
+// port-lint: source microtask.rs
 package io.github.kotlinmania.v8
 
 /**

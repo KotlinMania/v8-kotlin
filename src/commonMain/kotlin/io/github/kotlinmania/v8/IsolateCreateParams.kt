@@ -1,4 +1,4 @@
-// port-lint: source v8/src/isolate_create_params.rs
+// port-lint: source isolate_create_params.rs
 package io.github.kotlinmania.v8
 
 /**

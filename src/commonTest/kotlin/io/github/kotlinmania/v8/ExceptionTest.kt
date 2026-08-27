@@ -1,4 +1,4 @@
-// port-lint: tests v8/src/exception.rs
+// port-lint: tests exception.rs
 package io.github.kotlinmania.v8
 
 import kotlin.test.Test
