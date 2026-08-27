@@ -1,4 +1,4 @@
-// port-lint: tests isolate_create_params.rs
+// port-lint: tests v8/src/isolate_create_params.rs
 package io.github.kotlinmania.v8
 
 import kotlin.test.Test

@@ -4,10 +4,10 @@ Based on AST analysis, here are the concrete next steps.
 
 ## Summary
 
-- **Files Present:** 13/58 (22.4%)
-- **Function parity:** 145/1408 matched (target 210) — 10.3%
-- **Class/type parity:** 9/370 matched (target 36) — 2.4%
-- **Combined symbol parity:** 154/1778 matched (target 246) — 8.7%
+- **Files Present:** 13/110 (11.8%)
+- **Function parity:** 145/2180 matched (target 210) — 6.7%
+- **Class/type parity:** 9/1046 matched (target 36) — 0.9%
+- **Combined symbol parity:** 154/3226 matched (target 246) — 4.8%
 - **Average inline-code cosine:** 0.38 (function body across 13 matched files)
 - **Average documentation cosine:** 0.56 (doc text across 13 matched files)
 - **Cheat-zeroed Files:** 0
@@ -15,7 +15,7 @@ Based on AST analysis, here are the concrete next steps.
 
 ## Priority 1: Fix Incomplete High-Dependency Files
 
-### 1. value
+### 1. v8.value
 - **Similarity:** 0.19 (needs 66% improvement)
 - **Dependencies:** 23
 - **Priority Score:** 23207908.0
@@ -30,27 +30,27 @@ Based on AST analysis, here are the concrete next steps.
 
 Critical missing files (>10 dependencies):
 
-1. **context** (18 deps)
-   - Path: `context.rs`
+1. **v8.context** (18 deps)
+   - Path: `v8/src/context.rs`
    - Essential for 18 other files
 
-2. **string** (16 deps)
-   - Path: `string.rs`
+2. **v8.string** (16 deps)
+   - Path: `v8/src/string.rs`
    - Essential for 16 other files
 
-3. **isolate** (14 deps)
-   - Path: `isolate.rs`
+3. **v8.isolate** (14 deps)
+   - Path: `v8/src/isolate.rs`
    - Essential for 14 other files
 
-4. **object** (12 deps)
-   - Path: `object.rs`
+4. **v8.object** (12 deps)
+   - Path: `v8/src/object.rs`
    - Essential for 12 other files
 
 ## Detailed Work Items
 
 Every matched file is listed below with function and type symbol parity.
 
-### 1. value
+### 1. v8.value
 
 - **Target:** `v8.Value`
 - **Similarity:** 0.19
@@ -61,7 +61,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 0/0 matched (target 1)
 - **Missing types:** _none_
 
-### 2. data
+### 2. v8.data
 
 - **Target:** `v8.Data`
 - **Similarity:** 0.27
@@ -72,7 +72,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 2/66 matched (target 4)
 - **Missing types:** `AccessorSignature`, `Context`, `FixedArray`, `Message`, `Module`, `ModuleRequest`, `PrimitiveArray`, `Private`, `Script`, `ScriptOrModule`, `Signature`, `StackFrame`, `StackTrace`, `Template`, `FunctionTemplate`, `ObjectTemplate`, `UnboundModuleScript`, `UnboundScript`, `Value`, `External`, `Object`, `Array`, `ArrayBuffer`, `ArrayBufferView`, `DataView`, `TypedArray`, `BigInt64Array`, `BigUint64Array`, `Float16Array`, `Float32Array`, `Float64Array`, `Int16Array`, `Int32Array`, `Int8Array`, `Uint16Array`, `Uint32Array`, `Uint8Array`, `Uint8ClampedArray`, `BigIntObject`, `BooleanObject`, `Date`, `Function`, `Map`, `NumberObject`, `Promise`, `PromiseResolver`, `Proxy`, `RegExp`, `Set`, `SharedArrayBuffer`, `StringObject`, `SymbolObject`, `WasmMemoryObject`, `WasmModuleObject`, `Primitive`, `BigInt`, `Boolean`, `Name`, `String`, `Symbol`, `Number`, `Integer`, `Int32`, `Uint32`
 
-### 3. name
+### 3. v8.name
 
 - **Target:** `v8.Name`
 - **Similarity:** 0.24
@@ -83,7 +83,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 0/0 matched (target 1)
 - **Missing types:** _none_
 
-### 4. exception
+### 4. v8.exception
 
 - **Target:** `v8.Exception`
 - **Similarity:** 0.14
@@ -94,7 +94,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/1 matched (target 6)
 - **Missing types:** _none_
 
-### 5. property_attribute
+### 5. v8.property_attribute
 
 - **Target:** `v8.PropertyAttribute`
 - **Similarity:** 0.67
@@ -106,7 +106,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing types:** `Output`
 - **Tests:** 1/1 matched
 
-### 6. property_filter
+### 6. v8.property_filter
 
 - **Target:** `v8.PropertyFilter`
 - **Similarity:** 0.73
@@ -118,7 +118,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing types:** `Output`
 - **Tests:** 1/1 matched
 
-### 7. property_handler_flags
+### 7. v8.property_handler_flags
 
 - **Target:** `v8.PropertyHandlerFlags`
 - **Similarity:** 0.71
@@ -130,7 +130,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing types:** `Output`
 - **Tests:** 1/1 matched
 
-### 8. private
+### 8. v8.private
 
 - **Target:** `v8.Private`
 - **Similarity:** 0.31
@@ -141,7 +141,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 0/0 matched (target 2)
 - **Missing types:** _none_
 
-### 9. isolate_create_params
+### 9. v8.isolate_create_params
 
 - **Target:** `v8.IsolateCreateParams`
 - **Similarity:** 0.33
@@ -154,7 +154,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Tests:** 0/1 matched
 - **Lint issues:** 1
 
-### 10. primitives
+### 10. v8.primitives
 
 - **Target:** `v8.Primitives`
 - **Similarity:** 0.16
@@ -165,7 +165,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 0/0 matched (target 5)
 - **Missing types:** _none_
 
-### 11. microtask
+### 11. v8.microtask
 
 - **Target:** `v8.Microtask`
 - **Similarity:** 0.30
@@ -176,7 +176,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/1 matched (target 3)
 - **Missing types:** _none_
 
-### 12. symbol
+### 12. v8.symbol
 
 - **Target:** `v8.Symbol`
 - **Similarity:** 0.41
@@ -187,7 +187,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 0/0 matched (target 2)
 - **Missing types:** _none_
 
-### 13. json
+### 13. v8.json
 
 - **Target:** `v8.Json`
 - **Similarity:** 0.43
@@ -206,17 +206,4 @@ For each file to be considered "complete":
 - All tests ported
 - Documentation ported
 - port-lint header present
-
-## Reexport / Wiring Modules
-
-These files match `reexport_modules` patterns in `.ast_distance_config.json`. They are filtered out of
-normal priority and missing-file ladders because they are wiring
-modules, not direct logic ports. Consult them for call-site routing;
-do not treat them as the next implementation target by default.
-
-### Missing
-
-| Source | Expected target | Deps | Source path | Expected path |
-|--------|-----------------|------|-------------|---------------|
-| `lib` | `Lib` | 0 | `lib.rs` | `Lib.kt` |
 
