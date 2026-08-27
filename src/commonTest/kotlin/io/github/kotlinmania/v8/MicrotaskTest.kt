@@ -1,4 +1,4 @@
-// port-lint: tests v8/src/microtask.rs
+// port-lint: tests microtask.rs
 package io.github.kotlinmania.v8
 
 import kotlin.test.Test
