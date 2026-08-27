@@ -42,15 +42,25 @@ class Symbol private constructor(
         private val _unscopables: Symbol by lazy { Symbol("Symbol.unscopables") }
 
         fun getAsyncIterator(): Symbol = _asyncIterator
+
         fun getHasInstance(): Symbol = _hasInstance
+
         fun getIsConcatSpreadable(): Symbol = _isConcatSpreadable
+
         fun getIterator(): Symbol = _iterator
+
         fun getMatch(): Symbol = _match
+
         fun getReplace(): Symbol = _replace
+
         fun getSearch(): Symbol = _search
+
         fun getSplit(): Symbol = _split
+
         fun getToPrimitive(): Symbol = _toPrimitive
+
         fun getToStringTag(): Symbol = _toStringTag
+
         fun getUnscopables(): Symbol = _unscopables
     }
 }

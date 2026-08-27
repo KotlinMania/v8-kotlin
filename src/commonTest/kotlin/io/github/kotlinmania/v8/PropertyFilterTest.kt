@@ -57,9 +57,10 @@ class PropertyFilterTest {
             PropertyFilter.ALL_PROPERTIES or PropertyFilter.ONLY_WRITABLE,
         )
 
-        val attr = PropertyFilter.ONLY_WRITABLE or
+        val attr =
             PropertyFilter.ONLY_WRITABLE or
-            PropertyFilter.SKIP_STRINGS
+                PropertyFilter.ONLY_WRITABLE or
+                PropertyFilter.SKIP_STRINGS
         assertFalse(attr.isAllProperties())
         assertTrue(attr.isOnlyWritable())
         assertFalse(attr.isOnlyEnumerable())
