@@ -1,4 +1,4 @@
-// port-lint: tests symbol.rs
+// port-lint: tests v8/src/symbol.rs
 package io.github.kotlinmania.v8
 
 import kotlin.test.Test

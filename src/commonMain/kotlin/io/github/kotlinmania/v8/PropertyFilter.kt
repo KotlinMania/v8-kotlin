@@ -1,4 +1,4 @@
-// port-lint: source property_filter.rs
+// port-lint: source v8/src/property_filter.rs
 package io.github.kotlinmania.v8
 
 class PropertyFilter private constructor(

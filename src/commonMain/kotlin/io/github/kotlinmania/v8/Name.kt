@@ -1,4 +1,4 @@
-// port-lint: source name.rs
+// port-lint: source v8/src/name.rs
 package io.github.kotlinmania.v8
 
 /**
