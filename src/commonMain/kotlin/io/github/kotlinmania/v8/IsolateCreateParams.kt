@@ -18,6 +18,7 @@ class ResourceConstraints {
     }
 
     fun configureDefaults(physicalMemory: ULong, virtualMemoryLimit: ULong) {
+        virtualMemoryLimit.hashCode()
         physicalMemorySize = physicalMemory
     }
 }
