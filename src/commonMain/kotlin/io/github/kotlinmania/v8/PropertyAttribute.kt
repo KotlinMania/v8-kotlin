@@ -1,4 +1,4 @@
-// port-lint: source property_attribute.rs
+// port-lint: source v8/src/property_attribute.rs
 package io.github.kotlinmania.v8
 
 class PropertyAttribute private constructor(
