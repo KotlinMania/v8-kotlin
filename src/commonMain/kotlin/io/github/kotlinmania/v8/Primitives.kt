@@ -1,4 +1,4 @@
-// port-lint: source v8/src/primitives.rs
+// port-lint: source primitives.rs
 package io.github.kotlinmania.v8
 
 /**

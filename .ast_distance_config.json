@@ -2,7 +2,7 @@
   "type": "port",
   "name": "v8-kotlin",
   "source": {
-    "path": "tmp",
+    "path": "tmp/v8/src",
     "lang": "rust"
   },
   "target": {

@@ -1,4 +1,4 @@
-// port-lint: tests v8/src/property_handler_flags.rs
+// port-lint: tests property_handler_flags.rs
 package io.github.kotlinmania.v8
 
 import kotlin.test.Test

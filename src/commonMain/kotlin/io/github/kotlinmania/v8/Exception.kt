@@ -1,4 +1,4 @@
-// port-lint: source v8/src/exception.rs
+// port-lint: source exception.rs
 package io.github.kotlinmania.v8
 
 /**

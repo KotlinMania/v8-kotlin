@@ -1,4 +1,4 @@
-// port-lint: tests v8/src/json.rs
+// port-lint: tests json.rs
 package io.github.kotlinmania.v8
 
 import kotlin.test.Test
