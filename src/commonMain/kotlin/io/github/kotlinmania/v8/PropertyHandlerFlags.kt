@@ -1,4 +1,4 @@
-// port-lint: source v8/src/property_handler_flags.rs
+// port-lint: source property_handler_flags.rs
 package io.github.kotlinmania.v8
 
 class PropertyHandlerFlags private constructor(
