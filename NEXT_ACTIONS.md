@@ -5,9 +5,9 @@ Based on AST analysis, here are the concrete next steps.
 ## Summary
 
 - **Files Present:** 13/110 (11.8%)
-- **Function parity:** 145/2180 matched (target 210) — 6.7%
-- **Class/type parity:** 9/1046 matched (target 36) — 0.9%
-- **Combined symbol parity:** 154/3226 matched (target 246) — 4.8%
+- **Function parity:** 145/2162 matched (target 210) — 6.7%
+- **Class/type parity:** 9/1036 matched (target 36) — 0.9%
+- **Combined symbol parity:** 154/3198 matched (target 246) — 4.8%
 - **Average inline-code cosine:** 0.38 (function body across 13 matched files)
 - **Average documentation cosine:** 0.56 (doc text across 13 matched files)
 - **Cheat-zeroed Files:** 0
@@ -205,4 +205,19 @@ For each file to be considered "complete":
 - All tests ported
 - Documentation ported
 - port-lint header present
+
+## Reexport / Wiring Modules
+
+These files match `reexport_modules` patterns in `.ast_distance_config.json`. They are filtered out of
+normal priority and missing-file ladders because they are wiring
+modules, not direct logic ports. Consult them for call-site routing;
+do not treat them as the next implementation target by default.
+
+### Missing
+
+| Source | Expected target | Deps | Source path | Expected path |
+|--------|-----------------|------|-------------|---------------|
+| `v8.lib` | `v8.src.Lib` | 0 | `v8/src/lib.rs` | `v8/src/Lib.kt` |
+| `wrapper.lib` | `v8.thirdparty.rust.jxl.v03.wrapper.Lib` | 0 | `v8/third_party/rust/jxl/v0_3/wrapper/lib.rs` | `v8/thirdparty/rust/jxl/v03/wrapper/Lib.kt` |
+| `v8.third_party.rust.serde_json_lenient.v0_2.wrapper.lib` | `v8.thirdparty.rust.serdejsonlenient.v02.wrapper.Lib` | 0 | `v8/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs` | `v8/thirdparty/rust/serdejsonlenient/v02/wrapper/Lib.kt` |
 
