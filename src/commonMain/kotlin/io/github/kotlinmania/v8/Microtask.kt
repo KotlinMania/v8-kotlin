@@ -23,7 +23,7 @@ class MicrotaskQueue(
 ) {
     private val queue = mutableListOf<() -> Unit>()
     private var running = false
-    private var scopeDepth = 0
+    private val scopeDepth = 0
 
     fun enqueueMicrotask(microtask: () -> Unit) {
         queue.add(microtask)

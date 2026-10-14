@@ -70,3 +70,9 @@ DerivedData/
 *.xcuserstate
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
+
+# N-API native addon build artifacts
+/native/node-v8/node_modules/
+/native/node-v8/build/
+/native/node-v8/package-lock.json
+

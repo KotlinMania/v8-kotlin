@@ -11,7 +11,7 @@ class Symbol private constructor(
 
     override fun isSymbol(): Boolean = true
 
-    override fun toString(): String = "Symbol(${desc ?: ""})"
+    override fun toString(): String = "Symbol(${desc.orEmpty()})"
 
     override fun equals(other: Any?): Boolean = this === other
 

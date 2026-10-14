@@ -12,7 +12,7 @@ class Private private constructor(
     /** Returns the print name string of the private symbol, or null if none. */
     fun name(scope: Any? = null): String? = name
 
-    override fun toString(): String = "Private(${name ?: ""})"
+    override fun toString(): String = "Private(${name.orEmpty()})"
 
     override fun equals(other: Any?): Boolean = this === other
 
