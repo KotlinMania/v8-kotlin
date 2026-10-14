@@ -3,11 +3,12 @@ package io.github.kotlinmania.v8
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class IsolateCreateParamsTest {
     @Test
-    fun testDefaults() {
+    fun createParamDefaults() {
         val params = CreateParams.default()
         assertTrue(params.allowAtomicsWait)
 
@@ -17,5 +18,12 @@ class IsolateCreateParamsTest {
 
         params.setCodeRangeSizeInBytes(5000L)
         assertEquals(5000L, params.codeRangeSizeInBytes())
+
+        assertFalse(params.hasSetArrayBufferAllocator())
+        params.arrayBufferAllocator()
+        assertTrue(params.hasSetArrayBufferAllocator())
+
+        params.setStackLimit(100000uL)
+        assertEquals(100000uL, params.stackLimit())
     }
 }

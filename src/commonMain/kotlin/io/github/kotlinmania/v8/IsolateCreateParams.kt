@@ -23,6 +23,13 @@ class ResourceConstraints {
     }
 }
 
+typealias CounterLookupCallback = (name: String) -> Int?
+
+class CreateParamAllocations {
+    var snapshotBlobData: ByteArray? = null
+    var externalReferences: List<Any>? = null
+}
+
 /**
  * Initial configuration parameters for a new Isolate.
  */
@@ -30,11 +37,45 @@ class CreateParams(
     var allowAtomicsWait: Boolean = true,
 ) {
     val constraints: ResourceConstraints = ResourceConstraints()
+    var counterLookupCallback: CounterLookupCallback? = null
+    var snapshotBlob: ByteArray? = null
+    private var hasSetAllocator: Boolean = false
+    private var stackLimitValue: ULong = 0uL
 
     fun allowAtomicsWait(value: Boolean): CreateParams {
         this.allowAtomicsWait = value
         return this
     }
+
+    fun counterLookupCallback(callback: CounterLookupCallback?): CreateParams {
+        this.counterLookupCallback = callback
+        return this
+    }
+
+    fun snapshotBlob(data: ByteArray?): CreateParams {
+        this.snapshotBlob = data
+        return this
+    }
+
+    fun arrayBufferAllocator(): CreateParams {
+        this.hasSetAllocator = true
+        return this
+    }
+
+    fun hasSetArrayBufferAllocator(): Boolean = hasSetAllocator
+
+    fun externalReferences(extRefs: List<Any> = emptyList()): CreateParams = this
+
+    fun stackLimit(): ULong = stackLimitValue
+
+    fun setStackLimit(limit: ULong): CreateParams {
+        this.stackLimitValue = limit
+        return this
+    }
+
+    fun cppHeap(heap: Any? = null): CreateParams = this
+
+    fun finalize(): CreateParams = this
 
     fun heapLimits(initial: Long, max: Long): CreateParams {
         constraints.configureDefaultsFromHeapSize(initial, max)
@@ -85,3 +126,5 @@ class CreateParams(
         fun default(): CreateParams = CreateParams()
     }
 }
+
+fun createParamDefaults(): CreateParams = CreateParams()

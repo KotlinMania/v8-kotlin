@@ -75,4 +75,7 @@ interface Data {
 
     /** Returns true if this data is a `Value`. */
     fun isValue(): Boolean = false
+
+    /** Formats a debug representation of this Data. */
+    fun fmt(): String = toString()
 }

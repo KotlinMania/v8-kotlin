@@ -9,6 +9,9 @@ class Private private constructor(
 ) : Data {
     override fun isPrivate(): Boolean = true
 
+    /** Returns the print name string of the private symbol, or null if none. */
+    fun name(scope: Any? = null): String? = name
+
     override fun toString(): String = "Private(${name ?: ""})"
 
     override fun equals(other: Any?): Boolean = this === other
