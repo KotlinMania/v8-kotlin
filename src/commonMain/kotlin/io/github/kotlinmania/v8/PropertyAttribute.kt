@@ -22,6 +22,8 @@ class PropertyAttribute private constructor(
 
     infix fun or(rhs: PropertyAttribute): PropertyAttribute = PropertyAttribute(bits or rhs.bits)
 
+    fun bitor(rhs: PropertyAttribute): PropertyAttribute = or(rhs)
+
     override fun equals(other: Any?): Boolean =
         other is PropertyAttribute && bits == other.bits
 
