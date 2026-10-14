@@ -11,12 +11,25 @@ object Json {
     fun parse(jsonString: String): Value? {
         val trimmed = jsonString.trim()
         return when {
-            trimmed == "null" -> Null
-            trimmed == "true" -> V8Boolean.TRUE
-            trimmed == "false" -> V8Boolean.FALSE
-            trimmed.startsWith("\"") && trimmed.endsWith("\"") && trimmed.length >= 2 ->
+            trimmed == "null" -> {
+                Null
+            }
+
+            trimmed == "true" -> {
+                V8Boolean.TRUE
+            }
+
+            trimmed == "false" -> {
+                V8Boolean.FALSE
+            }
+
+            trimmed.startsWith("\"") && trimmed.endsWith("\"") && trimmed.length >= 2 -> {
                 V8String(trimmed.substring(1, trimmed.length - 1))
-            else -> null
+            }
+
+            else -> {
+                null
+            }
         }
     }
 

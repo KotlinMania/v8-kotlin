@@ -1,0 +1,4 @@
+headers = stddef.h stdint.h v8_wrapper.h
+headerFilter = v8_wrapper.h
+compilerOpts = -Isrc/nativeInterop/cinterop
+staticLibraries = v8_wrapper.a
