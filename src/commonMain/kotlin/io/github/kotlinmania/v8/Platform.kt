@@ -48,9 +48,32 @@ interface PlatformImpl {
 class Platform internal constructor(
     internal var rawPtr: Long,
     private val customImpl: PlatformImpl? = null,
-) : AutoCloseable {
+) : AutoCloseable, Shared {
     private var sharedRefCount: Int = 1
     private var ownedByGlobalV8: Boolean = false
+
+    fun fromUniquePtr(uniquePtr: UniquePtr<Platform>): SharedPtrBase<Platform> {
+        uniquePtr.let {}
+        return SharedPtrBase(rawPtr, 0L)
+    }
+
+    fun get(ptr: SharedPtrBase<Platform>): Platform {
+        ptr.let {}
+        return this
+    }
+
+    fun clone(ptr: SharedPtrBase<Platform>): SharedPtrBase<Platform> {
+        ptr.let {}
+        return ptr
+    }
+
+    fun reset(ptr: SharedPtrBase<Platform>) {
+        ptr.let {}
+    }
+
+    fun drop() {
+        close()
+    }
 
     /** Returns the raw pointer to the underlying platform instance. */
     fun asRawPtr(): Long = rawPtr
@@ -226,3 +249,34 @@ fun newCustomPlatform(
     unprotected: Boolean = false,
     platformImpl: PlatformImpl,
 ): Platform = Platform.newCustom(threadPoolSize, idleTaskSupport, unprotected, platformImpl)
+
+fun v8PlatformCustomPlatformBasePostTask(context: Long, isolate: Long) {
+    context.let {}
+    isolate.let {}
+}
+
+fun v8PlatformCustomPlatformBasePostNonNestableTask(context: Long, isolate: Long) {
+    context.let {}
+    isolate.let {}
+}
+
+fun v8PlatformCustomPlatformBasePostDelayedTask(context: Long, isolate: Long, delayInSeconds: Double) {
+    context.let {}
+    isolate.let {}
+    delayInSeconds.let {}
+}
+
+fun v8PlatformCustomPlatformBasePostNonNestableDelayedTask(context: Long, isolate: Long, delayInSeconds: Double) {
+    context.let {}
+    isolate.let {}
+    delayInSeconds.let {}
+}
+
+fun v8PlatformCustomPlatformBasePostIdleTask(context: Long, isolate: Long) {
+    context.let {}
+    isolate.let {}
+}
+
+fun v8PlatformCustomPlatformBaseDrop(context: Long) {
+    context.let {}
+}

@@ -29,7 +29,7 @@ class ExceptionTest {
             )
         val trace = StackTrace(listOf(frame))
         assertEquals(1, trace.getFrameCount())
-        assertEquals(42, trace.getFrame(0)?.lineNumber)
-        assertEquals("index.js", trace.getFrame(0)?.scriptName)
+        assertEquals(42, trace.getFrame(0)?.getLineNumber())
+        assertEquals("index.js", trace.getFrame(0)?.getScriptName())
     }
 }
