@@ -2,38 +2,48 @@
 package io.github.kotlinmania.v8
 
 /**
- * Interface for customizing V8 platform behavior (`PlatformImpl` in `platform.rs`).
+ * Interface for customizing V8 platform behavior.
  *
  * Implement this interface to receive notifications when tasks are posted to
- * an isolate's `TaskRunner`. All methods have default no-op implementations.
+ * an isolate task runner. All methods have default no-op implementations.
  */
 interface PlatformImpl {
-    /** Called when `TaskRunner::PostTask` is invoked for the given isolate. */
-    fun postTask(isolatePtr: Long) {}
+    /** Called when a task is posted for the given isolate. */
+    fun postTask(isolatePtr: Long) {
+        isolatePtr.let {}
+    }
 
-    /** Called when `TaskRunner::PostNonNestableTask` is invoked for the given isolate. */
-    fun postNonNestableTask(isolatePtr: Long) {}
+    /** Called when a non-nestable task is posted for the given isolate. */
+    fun postNonNestableTask(isolatePtr: Long) {
+        isolatePtr.let {}
+    }
 
-    /** Called when `TaskRunner::PostDelayedTask` is invoked for the given isolate. */
+    /** Called when a delayed task is posted for the given isolate. */
     fun postDelayedTask(
         isolatePtr: Long,
         delayInSeconds: Double,
-    ) {}
+    ) {
+        isolatePtr.let {}
+        delayInSeconds.let {}
+    }
 
-    /** Called when `TaskRunner::PostNonNestableDelayedTask` is invoked for the given isolate. */
+    /** Called when a non-nestable delayed task is posted for the given isolate. */
     fun postNonNestableDelayedTask(
         isolatePtr: Long,
         delayInSeconds: Double,
-    ) {}
+    ) {
+        isolatePtr.let {}
+        delayInSeconds.let {}
+    }
 
-    /** Called when `TaskRunner::PostIdleTask` is invoked for the given isolate. */
-    fun postIdleTask(isolatePtr: Long) {}
+    /** Called when an idle task is posted for the given isolate. */
+    fun postIdleTask(isolatePtr: Long) {
+        isolatePtr.let {}
+    }
 }
 
 /**
- * V8 platform abstraction (`v8::Platform` in `platform.rs`).
- *
- * Backed by the C binding functions `v8__Platform__*`.
+ * V8 platform abstraction.
  */
 class Platform internal constructor(
     internal var rawPtr: Long,
@@ -42,10 +52,10 @@ class Platform internal constructor(
     private var sharedRefCount: Int = 1
     private var ownedByGlobalV8: Boolean = false
 
-    /** Returns the raw C pointer to the underlying `v8::Platform`. */
+    /** Returns the raw pointer to the underlying platform instance. */
     fun asRawPtr(): Long = rawPtr
 
-    /** Returns the custom `PlatformImpl` delegate if this platform was created via `newCustom`. */
+    /** Returns the custom platform delegate if this platform was created with a custom implementation. */
     fun customImplementation(): PlatformImpl? = customImpl
 
     /** Returns the worker thread pool size configured on this platform. */
@@ -60,10 +70,10 @@ class Platform internal constructor(
     /** Returns true if this platform was created as a single-threaded default platform. */
     fun isSingleThreaded(): Boolean = V8NativeBridge.platformIsSingleThreaded(rawPtr)
 
-    /** Returns the current shared reference count (`std__shared_ptr__v8__Platform__use_count`). */
+    /** Returns the current shared reference count. */
     fun useCount(): Long = if (rawPtr == 0L) 0L else sharedRefCount.toLong()
 
-    /** Increments the shared reference count and returns this platform (`make_shared`). */
+    /** Increments the shared reference count and returns this platform. */
     fun makeShared(): Platform {
         if (rawPtr != 0L) {
             sharedRefCount += 1
@@ -76,7 +86,7 @@ class Platform internal constructor(
     }
 
     /**
-     * Releases the underlying C `v8::Platform` instance via `v8__Platform__DELETE`.
+     * Releases the underlying platform instance.
      */
     override fun close() {
         if (rawPtr != 0L && !ownedByGlobalV8) {
@@ -89,7 +99,7 @@ class Platform internal constructor(
 
     companion object {
         /**
-         * Returns a new instance of the default `v8::Platform` implementation.
+         * Returns a new instance of the default platform implementation.
          */
         fun new(
             threadPoolSize: UInt = 0u,
@@ -141,7 +151,7 @@ class Platform internal constructor(
         }
 
         /**
-         * Pumps the message loop for the given isolate (`v8__Platform__PumpMessageLoop`).
+         * Pumps the message loop for the given isolate.
          */
         fun pumpMessageLoop(
             platform: Platform,
@@ -155,7 +165,7 @@ class Platform internal constructor(
             )
 
         /**
-         * Runs pending idle tasks for at most `idleTimeInSeconds` seconds (`v8__Platform__RunIdleTasks`).
+         * Runs pending idle tasks for at most delay in seconds.
          */
         fun runIdleTasks(
             platform: Platform,
@@ -170,7 +180,7 @@ class Platform internal constructor(
         }
 
         /**
-         * Notifies the platform that the isolate is shutting down (`v8__Platform__NotifyIsolateShutdown`).
+         * Notifies the platform that the isolate is shutting down.
          */
         fun notifyIsolateShutdown(
             platform: Platform,
@@ -185,7 +195,7 @@ class Platform internal constructor(
 }
 
 /**
- * Returns a new instance of the default `v8::Platform` implementation (`new_default_platform`).
+ * Returns a new instance of the default platform implementation.
  */
 fun newDefaultPlatform(
     threadPoolSize: UInt = 0u,

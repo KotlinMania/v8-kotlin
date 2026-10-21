@@ -2,7 +2,7 @@
 package io.github.kotlinmania.v8
 
 /**
- * C-ABI representation of `v8::Maybe<bool>` (`support::MaybeBool`).
+ * Optional boolean representation.
  */
 enum class MaybeBool(
     val code: Int,
@@ -44,7 +44,7 @@ enum class MaybeBool(
 }
 
 /**
- * Two-pointer C-ABI tuple (`support::two_pointers_t`).
+ * Two pointer tuple.
  */
 data class TwoPointers(
     val first: Long,
@@ -52,7 +52,7 @@ data class TwoPointers(
 )
 
 /**
- * Three-pointer C-ABI tuple (`support::three_pointers_t`).
+ * Three pointer tuple.
  */
 data class ThreePointers(
     val first: Long,
@@ -61,7 +61,7 @@ data class ThreePointers(
 )
 
 /**
- * Memory pressure levels for `v8::Isolate::MemoryPressureNotification` (`v8::MemoryPressureLevel`).
+ * Memory pressure levels for isolate memory pressure notification.
  */
 enum class MemoryPressureLevel(
     val code: UByte,
@@ -72,7 +72,7 @@ enum class MemoryPressureLevel(
 }
 
 /**
- * Queries the C support layer (`support.h` / `v8_wrapper.c`) for ABI layout sizes.
+ * Queries the native support layer for ABI layout sizes.
  */
 object V8Support {
     fun twoPointersSize(): ULong = V8NativeBridge.supportTwoPointersSize().toULong()

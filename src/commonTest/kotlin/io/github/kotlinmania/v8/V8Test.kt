@@ -55,7 +55,6 @@ class V8Test {
 
     @Test
     fun testSandboxOffByDefault() {
-        // Matches upstream test_sandbox_use::test_sandbox_off in V8.rs
         assertFalse(isSandboxEnabled())
     }
 

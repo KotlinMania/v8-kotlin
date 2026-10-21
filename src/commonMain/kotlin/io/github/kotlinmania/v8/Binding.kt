@@ -177,92 +177,92 @@ internal expect object V8NativeBridge {
     fun isolateGetHeapCodeStatistics(isolatePtr: Long): HeapCodeStatistics?
 }
 
-/** Major version number of the bundled V8 engine (`v8__MAJOR_VERSION`). */
+/** Major version number of the bundled V8 engine. */
 const val MAJOR_VERSION: UInt = 14u
 
-/** Minor version number of the bundled V8 engine (`v8__MINOR_VERSION`). */
+/** Minor version number of the bundled V8 engine. */
 const val MINOR_VERSION: UInt = 6u
 
-/** Build number of the bundled V8 engine (`v8__BUILD_NUMBER`). */
+/** Build number of the bundled V8 engine. */
 const val BUILD_NUMBER: UInt = 202u
 
-/** Patch level of the bundled V8 engine (`v8__PATCH_LEVEL`). */
+/** Patch level of the bundled V8 engine. */
 const val PATCH_LEVEL: UInt = 9u
 
-/** Version string of the bundled V8 engine (`v8__VERSION_STRING`). */
+/** Version string of the bundled V8 engine. */
 const val VERSION_STRING: String = "14.6.202.9-rusty"
 
-/** Size in bytes of `v8::ScriptOrigin` on 64-bit targets (`v8__ScriptOrigin_SIZE`). */
+/** Size in bytes of script origin metadata on 64-bit targets. */
 const val SCRIPT_ORIGIN_SIZE: ULong = 40uL
 
-/** Size in bytes of `cppgc::Member<T>` (`cppgc__Member_SIZE`). */
+/** Size in bytes of member pointer. */
 const val CPPGC_MEMBER_SIZE: ULong = 4uL
 
-/** Size in bytes of `cppgc::WeakMember<T>` (`cppgc__WeakMember_SIZE`). */
+/** Size in bytes of weak member pointer. */
 const val CPPGC_WEAK_MEMBER_SIZE: ULong = 4uL
 
-/** Size in bytes of `v8::TracedReference<T>` (`v8__TracedReference_SIZE`). */
+/** Size in bytes of traced reference pointer. */
 const val TRACED_REFERENCE_SIZE: ULong = 8uL
 
-/** Size in bytes of `v8::Eternal<T>` (`v8__Eternal_SIZE`). */
+/** Size in bytes of eternal handle pointer. */
 const val ETERNAL_SIZE: ULong = 8uL
 
-/** Size in bytes of `v8::String::ValueView` (`v8__String__ValueView_SIZE`). */
+/** Size in bytes of string value view. */
 const val STRING_VALUE_VIEW_SIZE: ULong = 32uL
 
-/** Maximum length of a `v8::String` (`v8__String__kMaxLength`). */
+/** Maximum length of a string. */
 const val STRING_MAX_LENGTH: Int = 536870888
 
-/** Maximum byte length of a `v8::TypedArray` (`v8__TypedArray__kMaxByteLength`). */
+/** Maximum byte length of a typed array. */
 const val TYPED_ARRAY_MAX_BYTE_LENGTH: ULong = 9007199254740991uL
 
-/** Maximum on-heap size for a `v8::TypedArray` (`v8__TYPED_ARRAY_MAX_SIZE_IN_HEAP`). */
+/** Maximum on-heap size for a typed array. */
 const val TYPED_ARRAY_MAX_SIZE_IN_HEAP: ULong = 0uL
 
-/** Maximum length of a `v8::Uint8Array` (`v8__Uint8Array__kMaxLength`). */
+/** Maximum length of an unsigned 8-bit array. */
 const val UINT8_ARRAY_MAX_LENGTH: ULong = 9007199254740991uL
 
-/** Maximum length of a `v8::Uint8ClampedArray` (`v8__Uint8ClampedArray__kMaxLength`). */
+/** Maximum length of an unsigned clamped 8-bit array. */
 const val UINT8_CLAMPED_ARRAY_MAX_LENGTH: ULong = 9007199254740991uL
 
-/** Maximum length of a `v8::Int8Array` (`v8__Int8Array__kMaxLength`). */
+/** Maximum length of a signed 8-bit array. */
 const val INT8_ARRAY_MAX_LENGTH: ULong = 9007199254740991uL
 
-/** Maximum length of a `v8::Uint16Array` (`v8__Uint16Array__kMaxLength`). */
+/** Maximum length of an unsigned 16-bit array. */
 const val UINT16_ARRAY_MAX_LENGTH: ULong = 4503599627370495uL
 
-/** Maximum length of a `v8::Int16Array` (`v8__Int16Array__kMaxLength`). */
+/** Maximum length of a signed 16-bit array. */
 const val INT16_ARRAY_MAX_LENGTH: ULong = 4503599627370495uL
 
-/** Maximum length of a `v8::Uint32Array` (`v8__Uint32Array__kMaxLength`). */
+/** Maximum length of an unsigned 32-bit array. */
 const val UINT32_ARRAY_MAX_LENGTH: ULong = 2251799813685247uL
 
-/** Maximum length of a `v8::Int32Array` (`v8__Int32Array__kMaxLength`). */
+/** Maximum length of a signed 32-bit array. */
 const val INT32_ARRAY_MAX_LENGTH: ULong = 2251799813685247uL
 
-/** Maximum length of a `v8::Float16Array` (`v8__Float16Array__kMaxLength`). */
+/** Maximum length of a 16-bit float array. */
 const val FLOAT16_ARRAY_MAX_LENGTH: ULong = 4503599627370495uL
 
-/** Maximum length of a `v8::Float32Array` (`v8__Float32Array__kMaxLength`). */
+/** Maximum length of a 32-bit float array. */
 const val FLOAT32_ARRAY_MAX_LENGTH: ULong = 2251799813685247uL
 
-/** Maximum length of a `v8::Float64Array` (`v8__Float64Array__kMaxLength`). */
+/** Maximum length of a 64-bit float array. */
 const val FLOAT64_ARRAY_MAX_LENGTH: ULong = 1125899906842623uL
 
-/** Maximum length of a `v8::BigUint64Array` (`v8__BigUint64Array__kMaxLength`). */
+/** Maximum length of an unsigned 64-bit integer array. */
 const val BIG_UINT64_ARRAY_MAX_LENGTH: ULong = 1125899906842623uL
 
-/** Maximum length of a `v8::BigInt64Array` (`v8__BigInt64Array__kMaxLength`). */
+/** Maximum length of a signed 64-bit integer array. */
 const val BIG_INT64_ARRAY_MAX_LENGTH: ULong = 1125899906842623uL
 
-/** Name used by Oilpan when hiding internal C++ types (`cppgc::NameProvider::kHiddenName`). */
+/** Name used by Oilpan when hiding internal C++ types. */
 const val CPPGC_HIDDEN_NAME: String = "InternalNode"
 
-/** Name used by Oilpan when compiler RTTI is disabled (`cppgc::NameProvider::kNoNameDeducible`). */
+/** Name used by Oilpan when compiler RTTI is disabled. */
 const val CPPGC_NO_NAME_DEDUCIBLE: String = "<No name>"
 
 /**
- * Queries the C binding layer (`binding.hpp` / `v8_wrapper.c`) for version and ABI layout values.
+ * Queries the native binding layer for version and ABI layout values.
  */
 object V8Binding {
     fun majorVersion(): UInt = V8NativeBridge.bindingMajorVersion().toUInt()
@@ -313,7 +313,7 @@ enum class Intercepted(
 }
 
 /**
- * Import phases in module import requests (`v8::ModuleImportPhase`).
+ * Import phases in module import requests.
  */
 enum class ModuleImportPhase(
     val code: Int,
@@ -324,7 +324,7 @@ enum class ModuleImportPhase(
 }
 
 /**
- * Flags controlling `v8::String::Write*` operations (`v8::String::WriteFlags`).
+ * Flags controlling string write operations.
  */
 class WriteFlags private constructor(
     val bits: UInt,
@@ -351,7 +351,7 @@ class WriteFlags private constructor(
 }
 
 /**
- * Garbage collection type flags (`v8::GCType`).
+ * Garbage collection type flags.
  */
 class GCType private constructor(
     val bits: UInt,
@@ -381,7 +381,7 @@ class GCType private constructor(
 }
 
 /**
- * Flags passed to garbage collection callbacks (`v8::GCCallbackFlags`).
+ * Flags passed to garbage collection callbacks.
  */
 class GCCallbackFlags private constructor(
     val bits: UInt,
@@ -413,7 +413,7 @@ class GCCallbackFlags private constructor(
 }
 
 /**
- * Fast API call primitive and object types (`v8::CTypeInfo::Type`).
+ * Fast API call primitive and object types.
  */
 enum class CTypeInfoType(
     val code: UByte,
@@ -435,7 +435,7 @@ enum class CTypeInfoType(
 }
 
 /**
- * Fast API call parameter attribute flags (`v8::CTypeInfo::Flags`).
+ * Fast API call parameter attribute flags.
  */
 class CTypeInfoFlags private constructor(
     val bits: UByte,
@@ -464,7 +464,7 @@ class CTypeInfoFlags private constructor(
 }
 
 /**
- * Type descriptor for V8 Fast API calls (`v8::CTypeInfo`).
+ * Type descriptor for V8 Fast API calls.
  */
 data class CTypeInfo(
     val type: CTypeInfoType,
@@ -472,7 +472,7 @@ data class CTypeInfo(
 )
 
 /**
- * Representation of 64-bit integers in V8 Fast API calls (`v8::CFunctionInfo::Int64Representation`).
+ * Representation of 64-bit integers in V8 Fast API calls.
  */
 enum class Int64Representation(
     val code: UByte,
@@ -482,7 +482,7 @@ enum class Int64Representation(
 }
 
 /**
- * Overload resolution mode for `v8::CFunction` (`v8::CFunction::OverloadResolution`).
+ * Overload resolution mode for C functions.
  */
 enum class OverloadResolution(
     val code: Int,
@@ -493,7 +493,7 @@ enum class OverloadResolution(
 }
 
 /**
- * One-byte string view passed to V8 Fast API callbacks (`v8::FastOneByteString`).
+ * One-byte string view passed to V8 Fast API callbacks.
  */
 data class FastOneByteString(
     val data: String,
@@ -501,7 +501,7 @@ data class FastOneByteString(
 )
 
 /**
- * Signature metadata for a V8 Fast API function (`v8::CFunctionInfo`).
+ * Signature metadata for a V8 Fast API function.
  */
 class CFunctionInfo(
     val returnInfo: CTypeInfo,
@@ -515,7 +515,7 @@ class CFunctionInfo(
 }
 
 /**
- * Fast API function descriptor (`v8::CFunction`).
+ * Fast API function descriptor.
  */
 class CFunction(
     val address: Long,
@@ -523,7 +523,7 @@ class CFunction(
 )
 
 /**
- * Features reported via `Isolate::SetUseCounterCallback` (`v8::Isolate::UseCounterFeature`).
+ * Features reported via use counter callback.
  */
 enum class UseCounterFeature(
     val code: UInt,
@@ -589,9 +589,9 @@ enum class UseCounterFeature(
 }
 
 /**
- * Collection of V8 heap information (`v8::HeapStatistics`).
+ * Collection of V8 heap information.
  *
- * Instances of this class are populated by `IsolateHandle.getHeapStatistics()`.
+ * Instances of this class are populated by isolate heap statistics queries.
  */
 class HeapStatistics(
     private val totalHeapSizeValue: ULong = 0uL,
@@ -642,7 +642,7 @@ class HeapStatistics(
 }
 
 /**
- * Per-space V8 heap statistics (`v8::HeapSpaceStatistics`).
+ * Per-space V8 heap statistics.
  */
 class HeapSpaceStatistics(
     private val spaceNameValue: String,
@@ -663,7 +663,7 @@ class HeapSpaceStatistics(
 }
 
 /**
- * Code and metadata statistics for a V8 isolate (`v8::HeapCodeStatistics`).
+ * Code and metadata statistics for a V8 isolate.
  */
 class HeapCodeStatistics(
     private val codeAndMetadataSizeValue: ULong,
