@@ -12,14 +12,23 @@ enum class SideEffectType {
     HasSideEffectToReceiver,
 }
 
-class RawReturnValue(var ptr: Long = 0L)
+class RawReturnValue(
+    var ptr: Long = 0L,
+)
 
-class NumberValue(val num: Double) : Primitive {
+class NumberValue(
+    val num: Double,
+) : Primitive {
     override fun isNumber(): Boolean = true
+
     override fun numberValue(): Double = num
+
     override fun integerValue(): Long = num.toLong()
+
     override fun int32Value(): Int = num.toInt()
+
     override fun uint32Value(): UInt = num.toUInt()
+
     override fun toString(): String = num.toString()
 }
 
@@ -31,6 +40,7 @@ class ReturnValue<T>(
     fun setBool(value: Boolean) {
         valueVal = V8Boolean.new(value)
     }
+
     fun set_bool(value: Boolean) = setBool(value)
 
     fun set(value: Value) {
@@ -40,31 +50,37 @@ class ReturnValue<T>(
     fun setInt32(value: Int) {
         valueVal = NumberValue(value.toDouble())
     }
+
     fun set_int32(value: Int) = setInt32(value)
 
     fun setUint32(value: UInt) {
         valueVal = NumberValue(value.toDouble())
     }
+
     fun set_uint32(value: UInt) = setUint32(value)
 
     fun setDouble(value: Double) {
         valueVal = NumberValue(value)
     }
+
     fun set_double(value: Double) = setDouble(value)
 
     fun setNull() {
         valueVal = nullValue()
     }
+
     fun set_null() = setNull()
 
     fun setUndefined() {
         valueVal = undefinedValue()
     }
+
     fun set_undefined() = setUndefined()
 
     fun setEmptyString() {
         valueVal = V8String(0L, "")
     }
+
     fun set_empty_string() = setEmptyString()
 
     fun get(scope: Any? = null): Value {
@@ -79,6 +95,7 @@ class ReturnValue<T>(
             checkNotNull(info)
             return ReturnValue()
         }
+
         fun <T> from_property_callback_info(info: PropertyCallbackInfo<T>): ReturnValue<T> =
             fromPropertyCallbackInfo(info)
 
@@ -86,6 +103,7 @@ class ReturnValue<T>(
             checkNotNull(info)
             return ReturnValue()
         }
+
         fun from_function_callback_info(info: FunctionCallbackInfo): ReturnValue<Value> =
             fromFunctionCallbackInfo(info)
     }
@@ -99,15 +117,19 @@ class FunctionCallbackInfo(
     private val isConstruct: Boolean = false,
 ) {
     fun getIsolatePtr(): Long = isolatePtr
+
     fun get_isolate_ptr(): Long = getIsolatePtr()
 
     fun newTarget(): Value = if (isConstruct) thisObj else undefinedValue()
+
     fun new_target(): Value = newTarget()
 
     fun thisValue(): Object = thisObj
+
     internal fun `this`(): Object = thisObj
 
     fun isConstructCall(): Boolean = isConstruct
+
     fun is_construct_call(): Boolean = isConstructCall()
 
     fun data(): Value = dataVal
@@ -117,7 +139,9 @@ class FunctionCallbackInfo(
     fun get(index: Int): Value = if (index in args.indices) args[index] else undefinedValue()
 }
 
-class RawPropertyCallbackInfo(var ptr: Long = 0L)
+class RawPropertyCallbackInfo(
+    var ptr: Long = 0L,
+)
 
 class PropertyCallbackInfo<T>(
     val raw: RawPropertyCallbackInfo = RawPropertyCallbackInfo(),
@@ -127,9 +151,13 @@ class PropertyCallbackInfo<T>(
     private val shouldThrow: Boolean = false,
 ) {
     fun getIsolatePtr(): Long = isolatePtr
+
     fun get_isolate_ptr(): Long = getIsolatePtr()
+
     fun holder(): Object = holderObj
+
     fun data(): Value = dataVal
+
     fun shouldThrowOnError(): Boolean = shouldThrow
 }
 
@@ -137,15 +165,19 @@ class FunctionCallbackArguments(
     private val info: FunctionCallbackInfo,
 ) {
     fun getIsolate(): IsolateHandle = IsolateHandle(info.getIsolatePtr())
+
     fun get_isolate(): IsolateHandle = getIsolate()
 
     fun newTarget(): Value = info.newTarget()
+
     fun new_target(): Value = newTarget()
 
     fun isConstructCall(): Boolean = info.isConstructCall()
+
     fun is_construct_call(): Boolean = isConstructCall()
 
     fun thisValue(): Object = info.thisValue()
+
     internal fun `this`(): Object = info.`this`()
 
     fun data(): Value = info.data()
@@ -157,6 +189,7 @@ class FunctionCallbackArguments(
     companion object {
         fun fromFunctionCallbackInfo(info: FunctionCallbackInfo): FunctionCallbackArguments =
             FunctionCallbackArguments(info)
+
         fun from_function_callback_info(info: FunctionCallbackInfo): FunctionCallbackArguments =
             fromFunctionCallbackInfo(info)
     }
@@ -170,11 +203,13 @@ class PropertyCallbackArguments(
     fun data(): Value = info.data()
 
     fun shouldThrowOnError(): Boolean = info.shouldThrowOnError()
+
     fun should_throw_on_error(): Boolean = shouldThrowOnError()
 
     companion object {
         fun fromPropertyCallbackInfo(info: PropertyCallbackInfo<*>): PropertyCallbackArguments =
             PropertyCallbackArguments(info)
+
         fun from_property_callback_info(info: PropertyCallbackInfo<*>): PropertyCallbackArguments =
             fromPropertyCallbackInfo(info)
     }
@@ -198,42 +233,55 @@ typealias IndexedDeleterCallback = (UInt, PropertyCallbackInfo<*>) -> Unit
 class FunctionCallbackAdapter {
     fun mapping(): FunctionCallback = { _ -> }
 }
+
 class NamedGetterCallbackForAccessorAdapter {
     fun mapping(): NamedGetterCallbackForAccessor = { _, _ -> }
 }
+
 class NamedGetterCallbackAdapter {
     fun mapping(): NamedGetterCallback = { _, _ -> }
 }
+
 class NamedQueryCallbackAdapter {
     fun mapping(): NamedQueryCallback = { _, _ -> }
 }
+
 class NamedSetterCallbackForAccessorAdapter {
     fun mapping(): NamedSetterCallbackForAccessor = { _, _, _ -> }
 }
+
 class NamedSetterCallbackAdapter {
     fun mapping(): NamedSetterCallback = { _, _, _ -> }
 }
+
 class PropertyEnumeratorCallbackAdapter {
     fun mapping(): PropertyEnumeratorCallback = { _ -> }
 }
+
 class NamedDefinerCallbackAdapter {
     fun mapping(): NamedDefinerCallback = { _, _, _ -> }
 }
+
 class NamedDeleterCallbackAdapter {
     fun mapping(): NamedDeleterCallback = { _, _ -> }
 }
+
 class IndexedGetterCallbackAdapter {
     fun mapping(): IndexedGetterCallback = { _, _ -> }
 }
+
 class IndexedQueryCallbackAdapter {
     fun mapping(): IndexedQueryCallback = { _, _ -> }
 }
+
 class IndexedSetterCallbackAdapter {
     fun mapping(): IndexedSetterCallback = { _, _, _ -> }
 }
+
 class IndexedDefinerCallbackAdapter {
     fun mapping(): IndexedDefinerCallback = { _, _, _ -> }
 }
+
 class IndexedDeleterCallbackAdapter {
     fun mapping(): IndexedDeleterCallback = { _, _ -> }
 }
@@ -260,6 +308,7 @@ class FunctionBuilder<T> internal constructor(
         this.constructorBehaviorVal = constructorBehavior
         return this
     }
+
     fun constructor_behavior(constructorBehavior: ConstructorBehavior): FunctionBuilder<T> =
         constructorBehavior(constructorBehavior)
 
@@ -267,6 +316,7 @@ class FunctionBuilder<T> internal constructor(
         this.sideEffectTypeVal = sideEffectType
         return this
     }
+
     fun side_effect_type(sideEffectType: SideEffectType): FunctionBuilder<T> =
         sideEffectType(sideEffectType)
 
@@ -283,6 +333,7 @@ class FunctionBuilder<T> internal constructor(
 
         fun <T> newRaw(callback: FunctionCallback): FunctionBuilder<T> =
             FunctionBuilder(callback)
+
         fun <T> new_raw(callback: FunctionCallback): FunctionBuilder<T> =
             newRaw(callback)
     }
@@ -306,7 +357,7 @@ open class Function internal constructor(
     override fun isFunction(): Boolean = true
 
     private var nameVal: V8String = V8String(0L, "")
-    private var scriptIdVal: Int = 0
+    private val scriptIdVal: Int = 0
 
     fun call(
         scope: Any? = null,
@@ -318,13 +369,14 @@ open class Function internal constructor(
         }
         if (callback != null) {
             val retVal = ReturnValue<Value>()
-            val info = FunctionCallbackInfo(
-                isolatePtr = 0L,
-                thisObj = (recv as? Object) ?: Object(),
-                dataVal = undefinedValue(),
-                args = args,
-                isConstruct = false,
-            )
+            val info =
+                FunctionCallbackInfo(
+                    isolatePtr = 0L,
+                    thisObj = (recv as? Object) ?: Object(),
+                    dataVal = undefinedValue(),
+                    args = args,
+                    isConstruct = false,
+                )
             callback.invoke(info)
             return retVal.get()
         }
@@ -340,6 +392,7 @@ open class Function internal constructor(
         checkNotNull(context)
         return call(scope, recv, args)
     }
+
     fun call_with_context(
         scope: Any? = null,
         context: Context,
@@ -356,6 +409,7 @@ open class Function internal constructor(
         }
         return Object.new(scope)
     }
+
     fun new_instance(
         scope: Any? = null,
         args: List<Value> = emptyList(),
@@ -367,26 +421,33 @@ open class Function internal constructor(
         }
         return nameVal
     }
+
     fun get_name(scope: Any? = null): V8String = getName(scope)
 
     fun setName(name: V8String) {
         this.nameVal = name
     }
+
     fun set_name(name: V8String) = setName(name)
 
     fun getScriptColumnNumber(): UInt? = null
+
     fun get_script_column_number(): UInt? = getScriptColumnNumber()
 
     fun getScriptLineNumber(): UInt? = null
+
     fun get_script_line_number(): UInt? = getScriptLineNumber()
 
     fun getScriptOrigin(): ScriptOrigin? = null
+
     fun get_script_origin(): ScriptOrigin? = getScriptOrigin()
 
     fun scriptId(): Int = scriptIdVal
+
     fun script_id(): Int = scriptId()
 
     fun createCodeCache(): UniqueRef<CachedData>? = null
+
     fun create_code_cache(): UniqueRef<CachedData>? = createCodeCache()
 
     companion object {
@@ -395,6 +456,7 @@ open class Function internal constructor(
 
         fun builderRaw(callback: FunctionCallback): FunctionBuilder<Function> =
             FunctionBuilder.newRaw(callback)
+
         fun builder_raw(callback: FunctionCallback): FunctionBuilder<Function> =
             builderRaw(callback)
 
@@ -407,6 +469,7 @@ open class Function internal constructor(
             scope: Any? = null,
             callback: FunctionCallback,
         ): Function? = builderRaw(callback).build(scope)
+
         fun new_raw(
             scope: Any? = null,
             callback: FunctionCallback,

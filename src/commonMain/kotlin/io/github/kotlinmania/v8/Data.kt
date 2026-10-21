@@ -177,7 +177,9 @@ interface Date : Value
 interface NumberObject : Value
 
 /** An instance of the built-in Promise class (ECMA-262, 6th Edition, 25.4). */
-open class Promise internal constructor(rawPtr: Long = 0L) : Object(rawPtr)
+open class Promise internal constructor(
+    rawPtr: Long = 0L,
+) : Object(rawPtr)
 
 /** A PromiseResolver in JavaScript. */
 interface PromiseResolver : Data

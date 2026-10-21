@@ -12,7 +12,7 @@ open class Allocator internal constructor(
     internal var rawPtr: Long = 0L,
 ) : Shared,
     AutoCloseable {
-    private var sharedRefCount: Int = 1
+    private val sharedRefCount: Int = 1
 
     companion object {
         fun clone(ptr: SharedPtrBase<Allocator>): SharedPtrBase<Allocator> {
@@ -45,6 +45,7 @@ open class Allocator internal constructor(
     }
 
     typealias Target = ByteArray
+
     override fun close() {
         rawPtr = 0L
     }
@@ -87,7 +88,6 @@ fun interface BackingStoreDeleterCallback {
     fun invoke(data: Long, byteLength: Long, deleterData: Long)
 }
 
-
 interface Rawable {
     fun byteLen(): Int
 
@@ -120,6 +120,7 @@ open class BackingStore internal constructor(
     }
 
     typealias Target = ByteArray
+
     override fun close() {
         rawPtr = 0L
     }
@@ -156,7 +157,7 @@ open class ArrayBuffer internal constructor(
 ) : Object(rawPtr) {
     private var backingStoreRef: SharedRef<BackingStore> =
         SharedRef(SharedPtrBase(0L, 0L), BackingStore())
-    private var detachableFlag: Boolean = true
+    private val detachableFlag: Boolean = true
     private var detachedFlag: Boolean = false
     private var detachKeyVal: Value? = null
 
@@ -229,7 +230,8 @@ open class ArrayBuffer internal constructor(
         if (!isDetachable()) {
             return true
         }
-        if (detachKeyVal != null && detachKeyVal != key) {
+        val currentKey = detachKeyVal
+        if (currentKey != null && currentKey != key) {
             return null
         }
         detachedFlag = true

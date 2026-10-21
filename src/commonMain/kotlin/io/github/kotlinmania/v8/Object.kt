@@ -65,7 +65,7 @@ open class Object internal constructor(
     private var prototypeVal: Value? = null
     private var integrity: IntegrityLevel? = null
     private var isWrapper: Boolean = false
-    private var creationContext: Context? = null
+    private val creationContext: Context? = null
 
     companion object {
         fun new(scope: Any? = null): Object {

@@ -46,10 +46,11 @@ class StringTest {
     @Test
     fun testStringNewFromTwoByte() {
         // [0xD83E, 0xDD95] is the dinosaur emoji 🦕
-        val local = V8String.newFromTwoByte(
-            buffer = shortArrayOf(0xD83E.toShort(), 0xDD95.toShort()),
-            newType = NewStringType.Normal,
-        )
+        val local =
+            V8String.newFromTwoByte(
+                buffer = shortArrayOf(0xD83E.toShort(), 0xDD95.toShort()),
+                newType = NewStringType.Normal,
+            )
         assertNotNull(local)
         assertEquals(2, local.length())
         assertEquals(4, local.utf8Length())

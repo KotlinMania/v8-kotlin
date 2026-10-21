@@ -254,5 +254,3 @@ fun isSandboxEnabled(): Boolean = V8Engine.isSandboxEnabled()
 
 /** Returns true if the V8 sandbox is enabled. */
 fun isSandboxed(): Boolean = isSandboxEnabled()
-
-

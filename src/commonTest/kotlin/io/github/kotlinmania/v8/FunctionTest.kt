@@ -49,10 +49,12 @@ class FunctionTest {
 
     @Test
     fun testFunctionBuilder() {
-        val builder = Function.builder { _ -> }
-            .length(2)
-            .constructorBehavior(ConstructorBehavior.Allow)
-            .sideEffectType(SideEffectType.HasSideEffect)
+        val builder =
+            Function
+                .builder { _ -> }
+                .length(2)
+                .constructorBehavior(ConstructorBehavior.Allow)
+                .sideEffectType(SideEffectType.HasSideEffect)
 
         val fn = builder.build()
         assertNotNull(fn)

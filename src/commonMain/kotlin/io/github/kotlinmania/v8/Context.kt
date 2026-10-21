@@ -1,8 +1,6 @@
 // port-lint: source context.rs
 package io.github.kotlinmania.v8
 
-import kotlin.reflect.KClass
-
 class ContextOptions(
     val globalTemplate: ObjectTemplate? = null,
     val globalObject: Value? = null,
