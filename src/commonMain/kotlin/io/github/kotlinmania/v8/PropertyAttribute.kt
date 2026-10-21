@@ -24,6 +24,8 @@ class PropertyAttribute private constructor(
 
     fun bitor(rhs: PropertyAttribute): PropertyAttribute = or(rhs)
 
+    interface Output
+
     override fun equals(other: Any?): Boolean =
         other is PropertyAttribute && bits == other.bits
 

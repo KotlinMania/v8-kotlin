@@ -44,6 +44,7 @@ class PlatformTest {
         val customImpl =
             object : PlatformImpl {
                 override fun postTask(isolatePtr: Long) {
+                    isolatePtr.let {}
                     postedTasks += 1
                 }
             }

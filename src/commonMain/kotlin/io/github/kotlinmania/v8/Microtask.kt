@@ -20,7 +20,7 @@ enum class MicrotasksPolicy {
  */
 class MicrotaskQueue(
     val policy: MicrotasksPolicy = MicrotasksPolicy.AUTO,
-) {
+) : AutoCloseable {
     private val queue = mutableListOf<() -> Unit>()
     private var running = false
     private val scopeDepth = 0
@@ -45,6 +45,14 @@ class MicrotaskQueue(
     fun isRunningMicrotasks(): Boolean = running
 
     fun getMicrotasksScopeDepth(): Int = scopeDepth
+
+    fun drop() {
+        queue.clear()
+    }
+
+    override fun close() {
+        drop()
+    }
 
     companion object {
         fun new(policy: MicrotasksPolicy = MicrotasksPolicy.AUTO): MicrotaskQueue =

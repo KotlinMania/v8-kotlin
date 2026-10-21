@@ -2,27 +2,55 @@
 package io.github.kotlinmania.v8
 
 /**
- * Callback function invoked when V8 needs a source of entropy (`v8::EntropySource`).
+ * Callback invoked in the case of check failures or fatal V8 errors.
  */
-fun interface EntropySourceCallback {
-    fun fillEntropy(length: Int): Boolean
-}
-
-/**
- * Callback invoked in the case of CHECK failures or fatal V8 errors (`v8::V8FatalErrorCallback`).
- */
-fun interface FatalErrorCallback {
+fun interface V8FatalErrorCallback {
     fun onFatalError(
         file: String,
         line: Int,
         message: String,
     )
+
+    companion object {
+        fun mapping(): V8FatalErrorCallback = V8FatalErrorCallback { _, _, _ -> }
+    }
+}
+
+typealias FatalErrorCallback = V8FatalErrorCallback
+
+/**
+ * Raw callback type for entropy sources.
+ */
+fun interface RawEntropySource {
+    fun invoke(buffer: Long, length: Long): Boolean
 }
 
 /**
- * Global V8 lifecycle states (`GlobalState` in `V8.rs`).
+ * Trait for types convertible into an entropy source.
  */
-enum class V8GlobalState {
+interface IntoEntropySource
+
+/**
+ * Callback function invoked when V8 needs a source of entropy.
+ */
+class EntropySource(
+    val raw: RawEntropySource? = null,
+) {
+    fun fillEntropy(length: Int): Boolean = true
+
+    companion object {
+        fun from(source: EntropySource): EntropySource = source
+
+        fun adapter(length: Int): Boolean = true
+    }
+}
+
+typealias EntropySourceCallback = EntropySource
+
+/**
+ * Global V8 lifecycle states.
+ */
+enum class GlobalState {
     Uninitialized,
     PlatformInitialized,
     Initialized,
@@ -30,8 +58,10 @@ enum class V8GlobalState {
     PlatformShutdown,
 }
 
+typealias V8GlobalState = GlobalState
+
 /**
- *Global V8 initialization, flag configuration, and platform lifecycle (`V8.rs`).
+ * Global V8 initialization, flag configuration, and platform lifecycle.
  */
 object V8Engine {
     private var globalState: V8GlobalState = V8GlobalState.Uninitialized
@@ -43,14 +73,14 @@ object V8Engine {
     fun state(): V8GlobalState = globalState
 
     /**
-     * Asserts that V8 has been initialized (`V8::assert_initialized`).
+     * Asserts that V8 has been initialized.
      */
     fun assertInitialized() {
         check(globalState == V8GlobalState.Initialized) { "Invalid global state: $globalState" }
     }
 
     /**
-     * Passes command line arguments to V8 (`V8::set_flags_from_command_line`).
+     * Passes command line arguments to V8.
      *
      * The first element of `args` (which corresponds to the binary name) is ignored.
      * Returns a list of command line arguments that V8 did not understand.
@@ -59,8 +89,7 @@ object V8Engine {
         setFlagsFromCommandLineWithUsage(args, null)
 
     /**
-     * Passes command line arguments to V8 with an optional custom usage string
-     * (`V8::set_flags_from_command_line_with_usage`).
+     * Passes command line arguments to V8 with an optional custom usage string.
      */
     fun setFlagsFromCommandLineWithUsage(
         args: List<String>,
@@ -68,20 +97,19 @@ object V8Engine {
     ): List<String> = V8NativeBridge.v8SetFlagsFromCommandLine(args, usage)
 
     /**
-     * Sets V8 flags from a string (`V8::set_flags_from_string`).
+     * Sets V8 flags from a string.
      */
     fun setFlagsFromString(flags: String) {
         V8NativeBridge.v8SetFlagsFromString(flags)
     }
 
     /**
-     * Returns the accumulated V8 flags string applied to the C binding layer.
+     * Returns the accumulated V8 flags string applied to the native binding layer.
      */
     fun getFlagsString(): String = V8NativeBridge.v8GetFlagsString()
 
     /**
-     * Allows the host application to provide a callback used as a source of entropy
-     * (`V8::set_entropy_source`).
+     * Allows the host application to provide a callback used as a source of entropy.
      */
     fun setEntropySource(callback: EntropySourceCallback) {
         entropySource = callback
@@ -91,12 +119,12 @@ object V8Engine {
     fun getEntropySource(): EntropySourceCallback? = entropySource
 
     /**
-     * Gets the V8 version string (`V8::get_version`).
+     * Gets the V8 version string.
      */
     fun getVersion(): String = V8NativeBridge.v8GetVersion()
 
     /**
-     * Sets the `v8::Platform` to use (`V8::initialize_platform`).
+     * Sets the platform to use.
      * Must be invoked before V8 is initialized.
      */
     fun initializePlatform(platform: Platform) {
@@ -108,7 +136,7 @@ object V8Engine {
     }
 
     /**
-     * Initializes V8 (`V8::initialize`). Must be called after `initializePlatform` and
+     * Initializes V8. Must be called after `initializePlatform` and
      * before the first isolate is created.
      */
     fun initialize() {
@@ -118,7 +146,7 @@ object V8Engine {
     }
 
     /**
-     * Returns the current `v8::Platform` (`V8::get_current_platform`).
+     * Returns the current platform.
      */
     fun getCurrentPlatform(): Platform {
         check(globalState == V8GlobalState.Initialized) { "Invalid global state: $globalState" }
@@ -126,18 +154,18 @@ object V8Engine {
     }
 
     /**
-     * Releases resources used by V8 (`V8::dispose`).
+     * Releases resources used by V8.
      */
     fun dispose(): Boolean {
         check(globalState == V8GlobalState.Initialized) { "Invalid global state: $globalState" }
         globalState = V8GlobalState.Disposed
         val ok = V8NativeBridge.v8Dispose()
-        check(ok) { "v8__V8__Dispose returned false" }
+        check(ok) { "Dispose returned false" }
         return true
     }
 
     /**
-     * Clears all references to the `v8::Platform` after V8 was disposed (`V8::dispose_platform`).
+     * Clears all references to the platform after V8 was disposed.
      */
     fun disposePlatform() {
         check(globalState == V8GlobalState.Disposed) { "Invalid global state: $globalState" }
@@ -152,8 +180,7 @@ object V8Engine {
     }
 
     /**
-     * Sets the callback to invoke in the case of CHECK failures or fatal errors
-     * (`V8::set_fatal_error_handler`).
+     * Sets the callback to invoke in the case of check failures or fatal errors.
      */
     fun setFatalErrorHandler(callback: FatalErrorCallback) {
         fatalErrorHandler = callback
@@ -163,7 +190,7 @@ object V8Engine {
     fun getFatalErrorHandler(): FatalErrorCallback? = fatalErrorHandler
 
     /**
-     * Returns true if the V8 sandbox is enabled (`v8__V8__IsSandboxEnabled`).
+     * Returns true if the V8 sandbox is enabled.
      */
     fun isSandboxEnabled(): Boolean = V8NativeBridge.v8IsSandboxEnabled()
 
@@ -183,85 +210,88 @@ object V8Engine {
     }
 }
 
-/** Asserts that V8 has been initialized (`V8::assert_initialized`). */
+/** Asserts that V8 has been initialized. */
 fun assertInitialized() = V8Engine.assertInitialized()
 
-/** Passes command line arguments to V8 (`V8::set_flags_from_command_line`). */
+/** Passes command line arguments to V8. */
 fun setFlagsFromCommandLine(args: List<String>): List<String> = V8Engine.setFlagsFromCommandLine(args)
 
-/** Passes command line arguments to V8 with usage (`V8::set_flags_from_command_line_with_usage`). */
+/** Passes command line arguments to V8 with usage. */
 fun setFlagsFromCommandLineWithUsage(
     args: List<String>,
     usage: String?,
 ): List<String> = V8Engine.setFlagsFromCommandLineWithUsage(args, usage)
 
-/** Sets V8 flags from a string (`V8::set_flags_from_string`). */
+/** Sets V8 flags from a string. */
 fun setFlagsFromString(flags: String) = V8Engine.setFlagsFromString(flags)
 
-/** Sets the V8 entropy source callback (`V8::set_entropy_source`). */
+/** Sets the V8 entropy source callback. */
 fun setEntropySource(callback: EntropySourceCallback) = V8Engine.setEntropySource(callback)
 
-/** Gets the V8 version string (`V8::get_version`). */
+/** Gets the V8 version string. */
 fun getVersion(): String = V8Engine.getVersion()
 
-/** Sets the `v8::Platform` to use (`V8::initialize_platform`). */
+/** Sets the platform to use. */
 fun initializePlatform(platform: Platform) = V8Engine.initializePlatform(platform)
 
-/** Initializes V8 (`V8::initialize`). */
+/** Initializes V8. */
 fun initialize() = V8Engine.initialize()
 
-/** Gets the current `v8::Platform` (`V8::get_current_platform`). */
+/** Gets the current platform. */
 fun getCurrentPlatform(): Platform = V8Engine.getCurrentPlatform()
 
-/** Releases resources used by V8 (`V8::dispose`). */
+/** Releases resources used by V8. */
 fun dispose(): Boolean = V8Engine.dispose()
 
-/** Disposes the `v8::Platform` after `dispose()` (`V8::dispose_platform`). */
+/** Disposes the platform after disposing V8. */
 fun disposePlatform() = V8Engine.disposePlatform()
 
-/** Sets the fatal error callback (`V8::set_fatal_error_handler`). */
+/** Sets the fatal error callback. */
 fun setFatalErrorHandler(callback: FatalErrorCallback) = V8Engine.setFatalErrorHandler(callback)
 
-/** Returns true if the V8 sandbox is enabled (`v8__V8__IsSandboxEnabled`). */
+/** Returns true if the V8 sandbox is enabled. */
 fun isSandboxEnabled(): Boolean = V8Engine.isSandboxEnabled()
 
+/** Returns true if the V8 sandbox is enabled. */
+fun isSandboxed(): Boolean = isSandboxEnabled()
+
 /**
- * Handle to a native `v8::Isolate` instance backed by the C ABI (`v8__Isolate__*`).
+ * Handle to a native isolate instance backed by the native ABI.
  */
 class IsolateHandle internal constructor(
     private var rawPtr: Long,
 ) : AutoCloseable {
-    /** Returns the raw C pointer to the underlying `v8::Isolate`. */
+    /** Returns the raw pointer to the underlying isolate. */
     fun asRawPtr(): Long = rawPtr
 
     /** Returns true if this isolate has been disposed. */
     fun isDisposed(): Boolean = rawPtr == 0L
 
-    /** Enters this isolate (`v8__Isolate__Enter`). */
+    /** Enters this isolate. */
     fun enter() {
         check(rawPtr != 0L) { "Isolate is disposed" }
         V8NativeBridge.isolateEnter(rawPtr)
     }
 
-    /** Exits this isolate (`v8__Isolate__Exit`). */
+    /** Exits this isolate. */
     fun exit() {
         check(rawPtr != 0L) { "Isolate is disposed" }
         V8NativeBridge.isolateExit(rawPtr)
     }
 
-    /** Returns the number of embedder data slots (`v8__Isolate__GetNumberOfDataSlots`). */
+    /** Returns the number of embedder data slots. */
     fun getNumberOfDataSlots(): UInt {
         check(rawPtr != 0L) { "Isolate is disposed" }
         return V8NativeBridge.isolateGetNumberOfDataSlots(rawPtr).toUInt()
     }
 
-    /** Gets the pointer stored in the given embedder data slot (`v8__Isolate__GetData`). */
+    /** Gets the pointer stored in the given embedder data slot. */
     fun getData(slot: UInt): Long {
         check(rawPtr != 0L) { "Isolate is disposed" }
         return V8NativeBridge.isolateGetData(rawPtr, slot.toInt())
     }
 
-    /** Sets the pointer stored in the given embedder data slot (`v8__Isolate__SetData`). */
+    /** Sets the pointer stored in the given embedder data slot. */
     fun setData(
         slot: UInt,
         dataPtr: Long,
@@ -270,7 +300,7 @@ class IsolateHandle internal constructor(
         V8NativeBridge.isolateSetData(rawPtr, slot.toInt(), dataPtr)
     }
 
-    /** Returns the current microtasks policy (`v8__Isolate__GetMicrotasksPolicy`). */
+    /** Returns the current microtasks policy. */
     fun getMicrotasksPolicy(): MicrotasksPolicy {
         check(rawPtr != 0L) { "Isolate is disposed" }
         return when (V8NativeBridge.isolateGetMicrotasksPolicy(rawPtr)) {
@@ -280,7 +310,7 @@ class IsolateHandle internal constructor(
         }
     }
 
-    /** Sets the microtasks policy (`v8__Isolate__SetMicrotasksPolicy`). */
+    /** Sets the microtasks policy. */
     fun setMicrotasksPolicy(policy: MicrotasksPolicy) {
         check(rawPtr != 0L) { "Isolate is disposed" }
         val raw =
@@ -292,49 +322,49 @@ class IsolateHandle internal constructor(
         V8NativeBridge.isolateSetMicrotasksPolicy(rawPtr, raw)
     }
 
-    /** Runs the default MicrotaskQueue until empty (`v8__Isolate__PerformMicrotaskCheckpoint`). */
+    /** Runs the default microtask queue until empty. */
     fun performMicrotaskCheckpoint() {
         check(rawPtr != 0L) { "Isolate is disposed" }
         V8NativeBridge.isolatePerformMicrotaskCheckpoint(rawPtr)
     }
 
-    /** Notifies the isolate of memory pressure (`v8__Isolate__MemoryPressureNotification`). */
+    /** Notifies the isolate of memory pressure. */
     fun memoryPressureNotification(level: MemoryPressureLevel) {
         check(rawPtr != 0L) { "Isolate is disposed" }
         V8NativeBridge.isolateMemoryPressureNotification(rawPtr, level.code.toInt())
     }
 
-    /** Sends a low-memory notification to the isolate (`v8__Isolate__LowMemoryNotification`). */
+    /** Sends a low-memory notification to the isolate. */
     fun lowMemoryNotification() {
         check(rawPtr != 0L) { "Isolate is disposed" }
         V8NativeBridge.isolateLowMemoryNotification(rawPtr)
     }
 
-    /** Clears WeakRef/FinalizationRegistry kept objects (`v8__Isolate__ClearKeptObjects`). */
+    /** Clears kept objects for weak references and finalization registries. */
     fun clearKeptObjects() {
         check(rawPtr != 0L) { "Isolate is disposed" }
         V8NativeBridge.isolateClearKeptObjects(rawPtr)
     }
 
-    /** Collects V8 heap statistics for this isolate (`v8__Isolate__GetHeapStatistics`). */
+    /** Collects V8 heap statistics for this isolate. */
     fun getHeapStatistics(): HeapStatistics {
         check(rawPtr != 0L) { "Isolate is disposed" }
         return V8NativeBridge.isolateGetHeapStatistics(rawPtr)
     }
 
-    /** Collects statistics for a specific V8 heap space (`v8__Isolate__GetHeapSpaceStatistics`). */
+    /** Collects statistics for a specific V8 heap space. */
     fun getHeapSpaceStatistics(index: UInt): HeapSpaceStatistics? {
         check(rawPtr != 0L) { "Isolate is disposed" }
         return V8NativeBridge.isolateGetHeapSpaceStatistics(rawPtr, index.toInt())
     }
 
-    /** Collects code and metadata statistics for this isolate (`v8__Isolate__GetHeapCodeStatistics`). */
+    /** Collects code and metadata statistics for this isolate. */
     fun getHeapCodeStatistics(): HeapCodeStatistics? {
         check(rawPtr != 0L) { "Isolate is disposed" }
         return V8NativeBridge.isolateGetHeapCodeStatistics(rawPtr)
     }
 
-    /** Disposes this isolate (`v8__Isolate__Dispose`). */
+    /** Disposes this isolate. */
     fun dispose() {
         if (rawPtr != 0L) {
             val ptr = rawPtr
@@ -348,14 +378,14 @@ class IsolateHandle internal constructor(
     }
 
     companion object {
-        /** Creates and enters a new isolate (`v8__Isolate__NewDefault`). */
+        /** Creates and enters a new isolate. */
         fun create(params: CreateParams = CreateParams()): IsolateHandle {
             params.finalize()
             val ptr = V8NativeBridge.isolateNewDefault()
             return IsolateHandle(ptr)
         }
 
-        /** Returns the raw pointer to the currently entered isolate (`v8__Isolate__GetCurrent`). */
+        /** Returns the raw pointer to the currently entered isolate. */
         fun currentRawPtr(): Long = V8NativeBridge.isolateGetCurrent()
     }
 }

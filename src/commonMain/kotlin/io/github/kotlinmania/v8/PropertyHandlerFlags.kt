@@ -24,6 +24,8 @@ class PropertyHandlerFlags private constructor(
 
     fun bitor(rhs: PropertyHandlerFlags): PropertyHandlerFlags = this or rhs
 
+    interface Output
+
     override fun equals(other: Any?): Boolean =
         other is PropertyHandlerFlags && bits == other.bits
 

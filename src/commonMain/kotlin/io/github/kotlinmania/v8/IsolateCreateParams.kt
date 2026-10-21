@@ -5,16 +5,53 @@ package io.github.kotlinmania.v8
  * Resource constraints for an Isolate.
  */
 class ResourceConstraints {
-    var codeRangeSizeInBytes: Long = 0
-    var maxOldGenerationSizeInBytes: Long = 0
-    var maxYoungGenerationSizeInBytes: Long = 0
-    var initialOldGenerationSizeInBytes: Long = 0
-    var initialYoungGenerationSizeInBytes: Long = 0
-    var physicalMemorySize: ULong = 0uL
+    private var codeRangeSize: Long = 0
+    private var maxOldGenSize: Long = 0
+    private var maxYoungGenSize: Long = 0
+    private var initialOldGenSize: Long = 0
+    private var initialYoungGenSize: Long = 0
+    private var physicalMemorySize: ULong = 0uL
+    private var stackLimitValue: ULong = 0uL
+
+    fun maxOldGenerationSizeInBytes(): Long = maxOldGenSize
+
+    fun setMaxOldGenerationSizeInBytes(limit: Long) {
+        maxOldGenSize = limit
+    }
+
+    fun maxYoungGenerationSizeInBytes(): Long = maxYoungGenSize
+
+    fun setMaxYoungGenerationSizeInBytes(limit: Long) {
+        maxYoungGenSize = limit
+    }
+
+    fun codeRangeSizeInBytes(): Long = codeRangeSize
+
+    fun setCodeRangeSizeInBytes(limit: Long) {
+        codeRangeSize = limit
+    }
+
+    fun stackLimit(): ULong = stackLimitValue
+
+    fun setStackLimit(limit: ULong) {
+        stackLimitValue = limit
+    }
+
+    fun initialOldGenerationSizeInBytes(): Long = initialOldGenSize
+
+    fun setInitialOldGenerationSizeInBytes(initialSize: Long) {
+        initialOldGenSize = initialSize
+    }
+
+    fun initialYoungGenerationSizeInBytes(): Long = initialYoungGenSize
+
+    fun setInitialYoungGenerationSizeInBytes(initialSize: Long) {
+        initialYoungGenSize = initialSize
+    }
 
     fun configureDefaultsFromHeapSize(initialHeapSizeInBytes: Long, maximumHeapSizeInBytes: Long) {
-        initialOldGenerationSizeInBytes = initialHeapSizeInBytes
-        maxOldGenerationSizeInBytes = maximumHeapSizeInBytes
+        initialOldGenSize = initialHeapSizeInBytes
+        maxOldGenSize = maximumHeapSizeInBytes
     }
 
     fun configureDefaults(physicalMemory: ULong, virtualMemoryLimit: ULong) {
@@ -87,38 +124,38 @@ class CreateParams(
         return this
     }
 
-    fun maxOldGenerationSizeInBytes(): Long = constraints.maxOldGenerationSizeInBytes
+    fun maxOldGenerationSizeInBytes(): Long = constraints.maxOldGenerationSizeInBytes()
 
     fun setMaxOldGenerationSizeInBytes(limit: Long): CreateParams {
-        constraints.maxOldGenerationSizeInBytes = limit
+        constraints.setMaxOldGenerationSizeInBytes(limit)
         return this
     }
 
-    fun maxYoungGenerationSizeInBytes(): Long = constraints.maxYoungGenerationSizeInBytes
+    fun maxYoungGenerationSizeInBytes(): Long = constraints.maxYoungGenerationSizeInBytes()
 
     fun setMaxYoungGenerationSizeInBytes(limit: Long): CreateParams {
-        constraints.maxYoungGenerationSizeInBytes = limit
+        constraints.setMaxYoungGenerationSizeInBytes(limit)
         return this
     }
 
-    fun codeRangeSizeInBytes(): Long = constraints.codeRangeSizeInBytes
+    fun codeRangeSizeInBytes(): Long = constraints.codeRangeSizeInBytes()
 
     fun setCodeRangeSizeInBytes(limit: Long): CreateParams {
-        constraints.codeRangeSizeInBytes = limit
+        constraints.setCodeRangeSizeInBytes(limit)
         return this
     }
 
-    fun initialOldGenerationSizeInBytes(): Long = constraints.initialOldGenerationSizeInBytes
+    fun initialOldGenerationSizeInBytes(): Long = constraints.initialOldGenerationSizeInBytes()
 
     fun setInitialOldGenerationSizeInBytes(initialSize: Long): CreateParams {
-        constraints.initialOldGenerationSizeInBytes = initialSize
+        constraints.setInitialOldGenerationSizeInBytes(initialSize)
         return this
     }
 
-    fun initialYoungGenerationSizeInBytes(): Long = constraints.initialYoungGenerationSizeInBytes
+    fun initialYoungGenerationSizeInBytes(): Long = constraints.initialYoungGenerationSizeInBytes()
 
     fun setInitialYoungGenerationSizeInBytes(initialSize: Long): CreateParams {
-        constraints.initialYoungGenerationSizeInBytes = initialSize
+        constraints.setInitialYoungGenerationSizeInBytes(initialSize)
         return this
     }
 
