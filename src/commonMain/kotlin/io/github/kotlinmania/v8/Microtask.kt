@@ -2,20 +2,6 @@
 package io.github.kotlinmania.v8
 
 /**
- * Policy for running microtasks.
- */
-enum class MicrotasksPolicy {
-    /** Microtasks are invoked explicitly. */
-    EXPLICIT,
-
-    /** Microtasks are invoked when the outermost MicrotasksScope ends. */
-    SCOPED,
-
-    /** Microtasks are invoked when the JavaScript call stack becomes empty. */
-    AUTO,
-}
-
-/**
  * Represents the microtask queue, where microtasks are stored and processed.
  */
 class MicrotaskQueue(

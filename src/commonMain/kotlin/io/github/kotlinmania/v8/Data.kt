@@ -89,6 +89,9 @@ interface FixedArray : Data
 /** A request to load a module. */
 interface ModuleRequest : Data
 
+/** A compiled JavaScript module. */
+interface Module : Data
+
 /** An array to hold Primitive values. */
 interface PrimitiveArray : Data
 
@@ -121,9 +124,6 @@ interface External : Value
 
 /** A common base class for ArrayBufferView. */
 interface ArrayBufferView : Value
-
-/** A DataView in JavaScript. */
-interface DataView : ArrayBufferView
 
 /** A base class for typed arrays. */
 interface TypedArray : ArrayBufferView
@@ -176,11 +176,13 @@ interface Date : Value
 /** An object wrapper for Number. */
 interface NumberObject : Value
 
+/** An instance of the built-in Promise class (ECMA-262, 6th Edition, 25.4). */
+open class Promise internal constructor(
+    rawPtr: Long = 0L,
+) : Object(rawPtr)
+
 /** A PromiseResolver in JavaScript. */
 interface PromiseResolver : Data
-
-/** A SharedArrayBuffer in JavaScript. */
-interface SharedArrayBuffer : Value
 
 /** An object wrapper for String. */
 interface StringObject : Value

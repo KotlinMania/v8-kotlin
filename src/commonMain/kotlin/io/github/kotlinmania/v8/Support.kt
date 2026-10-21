@@ -61,17 +61,6 @@ data class ThreePointers(
 )
 
 /**
- * Memory pressure levels for isolate memory pressure notification.
- */
-enum class MemoryPressureLevel(
-    val code: UByte,
-) {
-    None(0u),
-    Moderate(1u),
-    Critical(2u),
-}
-
-/**
  * Queries the native support layer for ABI layout sizes.
  */
 object V8Support {

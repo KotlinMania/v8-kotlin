@@ -17,7 +17,7 @@ class StackFrame(
     isConstructor: Boolean = false,
     isWasm: Boolean = false,
     isUserJavaScript: Boolean = true,
-) {
+) : Data {
     private val lineNum: Int = lineNumber
     private val col: Int = column
     private val scriptIdentifier: Int = scriptId
@@ -57,6 +57,8 @@ class StackFrame(
         return scriptSourceMapUrlStr
     }
 
+    fun getScriptSourceMappingUrl(scope: Any? = null): String? = getScriptSourceMappingURL(scope)
+
     fun getFunctionName(scope: Any? = null): String? {
         scope.let {}
         return fnName
@@ -69,6 +71,8 @@ class StackFrame(
     fun isWasm(): Boolean = wasmFlag
 
     fun isUserJavaScript(): Boolean = userJavaScriptFlag
+
+    fun isUserJavascript(): Boolean = userJavaScriptFlag
 }
 
 /**
@@ -76,7 +80,7 @@ class StackFrame(
  */
 class StackTrace(
     val frames: List<StackFrame> = emptyList(),
-) {
+) : Data {
     fun getFrameCount(): Int = frames.size
 
     fun getFrame(index: Int): StackFrame? = frames.getOrNull(index)
@@ -108,7 +112,7 @@ class Message(
     private val endCol: Int = 0,
     private val sharedCrossOriginFlag: Boolean = false,
     private val opaqueFlag: Boolean = false,
-) {
+) : Data {
     fun get(scope: Any? = null): String {
         scope.let {}
         return text
