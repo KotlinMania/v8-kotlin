@@ -48,7 +48,8 @@ interface PlatformImpl {
 class Platform internal constructor(
     internal var rawPtr: Long,
     private val customImpl: PlatformImpl? = null,
-) : AutoCloseable, Shared {
+) : AutoCloseable,
+    Shared {
     private var sharedRefCount: Int = 1
     private var ownedByGlobalV8: Boolean = false
 

@@ -170,33 +170,49 @@ class SharedRef<T : Shared>(
     fun toSharedPtr(): SharedPtr<T> = SharedPtr(base, instance)
 }
 
-class CxxVTable(val ptr: Long = 0L)
-class RustVTable<DynT>(val ptr: Long = 0L)
-class FieldOffset<F>(val offset: ULong = 0uL)
+class CxxVTable(
+    val ptr: Long = 0L,
+)
+
+class RustVTable<DynT>(
+    val ptr: Long = 0L,
+)
+
+class FieldOffset<F>(
+    val offset: ULong = 0uL,
+)
 
 class Maybe<T>(
     val hasValue: Boolean,
     val value: T?,
 ) {
     fun isJust(): Boolean = hasValue
+
     fun isNothing(): Boolean = !hasValue
+
     fun fromJust(): T = checkNotNull(value) { "Cannot unwrap nothing value" }
 
     companion object {
         fun <T> just(value: T): Maybe<T> = Maybe(true, value)
+
         fun <T> nothing(): Maybe<T> = Maybe(false, null)
     }
 }
 
 interface UnitType
+
 object UnitValue : UnitType
 
 object DefaultTag
+
 object IdenticalConversionTag
 
 interface MapFnFrom<F, Tag>
+
 interface MapFnTo<T, Tag>
+
 interface CFnFrom<F>
+
 interface ToCFn<T>
 
 data class MockSharedObj(
