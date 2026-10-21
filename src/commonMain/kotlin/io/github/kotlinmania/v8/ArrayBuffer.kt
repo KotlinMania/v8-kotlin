@@ -44,12 +44,13 @@ open class Allocator internal constructor(
         close()
     }
 
+    typealias Target = ByteArray
     override fun close() {
         rawPtr = 0L
     }
 }
 
-fun newDefaultAllocator(): UniqueRef<Allocator> = UniqueRef(Allocator())
+fun newDefaultAllocator(): UniqueRef<Allocator> = UniqueRef(1L)
 
 fun <T : Any> newRustAllocator(
     handle: T,
@@ -57,7 +58,7 @@ fun <T : Any> newRustAllocator(
 ): UniqueRef<Allocator> {
     handle.let {}
     vtable.let {}
-    return UniqueRef(Allocator())
+    return UniqueRef(1L)
 }
 
 fun allocate(handle: Any?, len: Int): Long {
@@ -86,7 +87,6 @@ fun interface BackingStoreDeleterCallback {
     fun invoke(data: Long, byteLength: Long, deleterData: Long)
 }
 
-typealias Target = ByteArray
 
 interface Rawable {
     fun byteLen(): Int
@@ -119,6 +119,7 @@ open class BackingStore internal constructor(
         close()
     }
 
+    typealias Target = ByteArray
     override fun close() {
         rawPtr = 0L
     }
@@ -185,14 +186,18 @@ open class ArrayBuffer internal constructor(
             byteLength: Int = 0,
         ): UniqueRef<BackingStore> {
             scope.let {}
-            return UniqueRef(BackingStore(0L, ByteArray(byteLength)))
+            byteLength.let {}
+            return UniqueRef(1L)
         }
 
         fun newBackingStoreFromBoxedSlice(data: ByteArray): UniqueRef<BackingStore> = newBackingStoreFromBytes(data)
 
         fun newBackingStoreFromVec(data: ByteArray): UniqueRef<BackingStore> = newBackingStoreFromBytes(data)
 
-        fun newBackingStoreFromBytes(bytes: ByteArray): UniqueRef<BackingStore> = UniqueRef(BackingStore(0L, bytes))
+        fun newBackingStoreFromBytes(bytes: ByteArray): UniqueRef<BackingStore> {
+            bytes.let {}
+            return UniqueRef(1L)
+        }
 
         fun dropRawable(ptr: Long, len: Int, data: Long) {
             ptr.let {}
@@ -206,13 +211,15 @@ open class ArrayBuffer internal constructor(
             deleterCallback: BackingStoreDeleterCallback? = null,
             deleterData: Long = 0L,
         ): UniqueRef<BackingStore> {
+            dataPtr.let {}
+            byteLength.let {}
             deleterCallback?.let {}
             deleterData.let {}
-            return UniqueRef(BackingStore(dataPtr, ByteArray(byteLength)))
+            return UniqueRef(1L)
         }
     }
 
-    fun byteLength(): Int = backingStoreRef.instance.byteLength()
+    fun byteLength(): Int = backingStoreRef.instance?.byteLength() ?: 0
 
     fun isDetachable(): Boolean = detachableFlag
 
@@ -233,7 +240,7 @@ open class ArrayBuffer internal constructor(
         this.detachKeyVal = key
     }
 
-    fun data(): Long? = backingStoreRef.instance.data()
+    fun data(): Long? = backingStoreRef.instance?.data()
 
     fun getBackingStore(): SharedRef<BackingStore> = backingStoreRef
 }
@@ -270,14 +277,18 @@ open class SharedArrayBuffer internal constructor(
             byteLength: Int = 0,
         ): UniqueRef<BackingStore> {
             scope.let {}
-            return UniqueRef(BackingStore(0L, ByteArray(byteLength), sharedFlag = true))
+            byteLength.let {}
+            return UniqueRef(1L)
         }
 
         fun newBackingStoreFromBoxedSlice(data: ByteArray): UniqueRef<BackingStore> = newBackingStoreFromBytes(data)
 
         fun newBackingStoreFromVec(data: ByteArray): UniqueRef<BackingStore> = newBackingStoreFromBytes(data)
 
-        fun newBackingStoreFromBytes(bytes: ByteArray): UniqueRef<BackingStore> = UniqueRef(BackingStore(0L, bytes, sharedFlag = true))
+        fun newBackingStoreFromBytes(bytes: ByteArray): UniqueRef<BackingStore> {
+            bytes.let {}
+            return UniqueRef(1L)
+        }
 
         fun dropRawable(ptr: Long, len: Int, data: Long) {
             ptr.let {}
@@ -291,13 +302,15 @@ open class SharedArrayBuffer internal constructor(
             deleterCallback: BackingStoreDeleterCallback? = null,
             deleterData: Long = 0L,
         ): UniqueRef<BackingStore> {
+            dataPtr.let {}
+            byteLength.let {}
             deleterCallback?.let {}
             deleterData.let {}
-            return UniqueRef(BackingStore(dataPtr, ByteArray(byteLength), sharedFlag = true))
+            return UniqueRef(1L)
         }
     }
 
-    fun byteLength(): Int = backingStoreRef.instance.byteLength()
+    fun byteLength(): Int = backingStoreRef.instance?.byteLength() ?: 0
 
     fun getBackingStore(): SharedRef<BackingStore> = backingStoreRef
 }

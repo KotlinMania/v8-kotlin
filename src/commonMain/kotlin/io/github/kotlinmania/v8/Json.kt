@@ -46,18 +46,3 @@ object Json {
         }
 }
 
-/**
- * A JavaScript string.
- */
-class V8String(
-    val value: String,
-) : Name {
-    override fun isString(): Boolean = true
-
-    override fun toString(): String = value
-
-    override fun equals(other: Any?): Boolean =
-        other is V8String && value == other.value
-
-    override fun hashCode(): Int = value.hashCode()
-}

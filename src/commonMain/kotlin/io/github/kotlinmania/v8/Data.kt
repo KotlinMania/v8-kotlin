@@ -122,9 +122,6 @@ interface External : Value
 /** A common base class for ArrayBufferView. */
 interface ArrayBufferView : Value
 
-/** A DataView in JavaScript. */
-interface DataView : ArrayBufferView
-
 /** A base class for typed arrays. */
 interface TypedArray : ArrayBufferView
 
@@ -178,9 +175,6 @@ interface NumberObject : Value
 
 /** A PromiseResolver in JavaScript. */
 interface PromiseResolver : Data
-
-/** A SharedArrayBuffer in JavaScript. */
-interface SharedArrayBuffer : Value
 
 /** An object wrapper for String. */
 interface StringObject : Value
