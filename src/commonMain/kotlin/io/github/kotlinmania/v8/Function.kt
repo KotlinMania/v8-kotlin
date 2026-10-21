@@ -105,7 +105,7 @@ class FunctionCallbackInfo(
     fun new_target(): Value = newTarget()
 
     fun thisValue(): Object = thisObj
-    fun `this`(): Object = thisObj
+    internal fun `this`(): Object = thisObj
 
     fun isConstructCall(): Boolean = isConstruct
     fun is_construct_call(): Boolean = isConstructCall()
@@ -146,7 +146,7 @@ class FunctionCallbackArguments(
     fun is_construct_call(): Boolean = isConstructCall()
 
     fun thisValue(): Object = info.thisValue()
-    fun `this`(): Object = info.`this`()
+    internal fun `this`(): Object = info.`this`()
 
     fun data(): Value = info.data()
 
