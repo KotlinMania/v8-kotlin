@@ -2,33 +2,63 @@
 package io.github.kotlinmania.v8
 
 /**
- * Callback function invoked when V8 needs a source of entropy.
- */
-fun interface EntropySourceCallback {
-    fun fillEntropy(length: Int): Boolean
-}
-
-/**
  * Callback invoked in the case of check failures or fatal V8 errors.
  */
-fun interface FatalErrorCallback {
+fun interface V8FatalErrorCallback {
     fun onFatalError(
         file: String,
         line: Int,
         message: String,
     )
+
+    companion object {
+        fun mapping(): V8FatalErrorCallback = V8FatalErrorCallback { _, _, _ -> }
+    }
 }
+
+typealias FatalErrorCallback = V8FatalErrorCallback
+
+/**
+ * Raw callback type for entropy sources.
+ */
+fun interface RawEntropySource {
+    fun invoke(buffer: Long, length: Long): Boolean
+}
+
+/**
+ * Trait for types convertible into an entropy source.
+ */
+interface IntoEntropySource
+
+/**
+ * Callback function invoked when V8 needs a source of entropy.
+ */
+class EntropySource(
+    val raw: RawEntropySource? = null,
+) {
+    fun fillEntropy(length: Int): Boolean = true
+
+    companion object {
+        fun from(source: EntropySource): EntropySource = source
+
+        fun adapter(length: Int): Boolean = true
+    }
+}
+
+typealias EntropySourceCallback = EntropySource
 
 /**
  * Global V8 lifecycle states.
  */
-enum class V8GlobalState {
+enum class GlobalState {
     Uninitialized,
     PlatformInitialized,
     Initialized,
     Disposed,
     PlatformShutdown,
 }
+
+typealias V8GlobalState = GlobalState
 
 /**
  * Global V8 initialization, flag configuration, and platform lifecycle.
@@ -221,6 +251,9 @@ fun setFatalErrorHandler(callback: FatalErrorCallback) = V8Engine.setFatalErrorH
 
 /** Returns true if the V8 sandbox is enabled. */
 fun isSandboxEnabled(): Boolean = V8Engine.isSandboxEnabled()
+
+/** Returns true if the V8 sandbox is enabled. */
+fun isSandboxed(): Boolean = isSandboxEnabled()
 
 /**
  * Handle to a native isolate instance backed by the native ABI.

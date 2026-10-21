@@ -48,6 +48,8 @@ class V8Boolean private constructor(
     }
 }
 
-fun nullValue(): Primitive = Null
+fun undefined(scope: IsolateHandle? = null): Primitive = Undefined
 
-fun undefinedValue(): Primitive = Undefined
+fun nullValue(scope: IsolateHandle? = null): Primitive = Null
+
+fun undefinedValue(scope: IsolateHandle? = null): Primitive = Undefined

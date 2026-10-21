@@ -30,6 +30,8 @@ class PropertyFilter private constructor(
 
     fun bitor(rhs: PropertyFilter): PropertyFilter = this or rhs
 
+    interface Output
+
     override fun equals(other: Any?): Boolean =
         other is PropertyFilter && bits == other.bits
 

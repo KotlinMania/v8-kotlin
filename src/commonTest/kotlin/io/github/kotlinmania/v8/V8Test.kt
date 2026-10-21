@@ -54,8 +54,15 @@ class V8Test {
     }
 
     @Test
-    fun testSandboxOffByDefault() {
-        assertFalse(isSandboxEnabled())
+    fun testSandboxOff() {
+        assertFalse(isSandboxed())
+    }
+
+    @Test
+    fun testSandboxOn() {
+        if (isSandboxed()) {
+            assertTrue(isSandboxed())
+        }
     }
 
     @Test

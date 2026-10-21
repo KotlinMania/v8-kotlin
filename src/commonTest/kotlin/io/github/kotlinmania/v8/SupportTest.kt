@@ -3,6 +3,7 @@ package io.github.kotlinmania.v8
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -53,5 +54,50 @@ class SupportTest {
         assertEquals(0u.toUByte(), MemoryPressureLevel.None.code)
         assertEquals(1u.toUByte(), MemoryPressureLevel.Moderate.code)
         assertEquals(2u.toUByte(), MemoryPressureLevel.Critical.code)
+    }
+
+    @Test
+    fun sharedPtrAndSharedRef() {
+        val sharedPtrA1 = SharedPtr(MockSharedObj.SHARED_PTR_BASE_A, MockSharedObj.INSTANCE_A)
+        assertFalse(sharedPtrA1.isNull())
+        sharedPtrA1.assertUseCountEq(1L)
+
+        val sharedRefA = checkNotNull(sharedPtrA1.take())
+        assertEquals(11111u, sharedRefA.inner)
+        sharedRefA.assertUseCountEq(1L)
+
+        val sharedPtrA2 = sharedRefA.toSharedPtr()
+        assertFalse(sharedPtrA2.isNull())
+        sharedPtrA2.assertUseCountEq(1L)
+        assertEquals(11111u, sharedPtrA2.unwrap().inner)
+
+        val sharedPtrB1 = SharedPtr(MockSharedObj.SHARED_PTR_BASE_B, MockSharedObj.INSTANCE_B)
+        assertFalse(sharedPtrB1.isNull())
+        sharedPtrB1.assertUseCountEq(2L)
+
+        val sharedRefB = checkNotNull(sharedPtrB1.take())
+        assertEquals(22222u, sharedRefB.inner)
+        sharedRefB.assertUseCountEq(2L)
+
+        val sharedPtrB2 = sharedRefB.toSharedPtr()
+        assertFalse(sharedPtrB2.isNull())
+        sharedPtrB2.assertUseCountEq(2L)
+        assertEquals(22222u, sharedPtrB2.unwrap().inner)
+    }
+
+    @Test
+    fun sharedPtrUseCountAssertionFailed() {
+        val sharedPtr = SharedPtr<MockSharedObj>()
+        assertFailsWith<IllegalStateException> {
+            sharedPtr.assertUseCountEq(3L)
+        }
+    }
+
+    @Test
+    fun sharedRefUseCountAssertionFailed() {
+        val sharedRef = SharedRef(MockSharedObj.SHARED_PTR_BASE_B, MockSharedObj.INSTANCE_B)
+        assertFailsWith<IllegalStateException> {
+            sharedRef.assertUseCountEq(7L)
+        }
     }
 }
